@@ -4,6 +4,7 @@ import { usePagenation } from '../hooks/usePagenation';
 
 import Pagenation from './Pagenation';
 import SearchInput from './SearchInput';
+import PostCreateModal from './WriteModal';
 
 export interface BaseRow {
   id: number | string;
@@ -73,7 +74,7 @@ export function BoardPage<T extends BaseRow>({
         <div className="flex items-center gap-3">
           <SearchInput onSearch={setSearchTerm} placeholder="검색어를 입력하세요" />
 
-          {canWrite && ModalComponent && onSubmit && (
+          {canWrite && (
             <button
               onClick={() => setIsOpen(true)}
               className="px-4 py-1 bg-mega text-white rounded"
@@ -82,15 +83,8 @@ export function BoardPage<T extends BaseRow>({
             </button>
           )}
 
-          {isOpen && ModalComponent && onSubmit && (
-            <ModalComponent
-              onClose={() => setIsOpen(false)}
-              onSubmit={(data) => {
-                onSubmit(data);
-                setIsOpen(false);
-                alert('등록이 완료되었습니다!');
-              }}
-            />
+          {isOpen && (
+            <PostCreateModal onClose={() => setIsOpen(false)} />
           )}
         </div>
       </div>

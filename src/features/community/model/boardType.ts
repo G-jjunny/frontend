@@ -21,7 +21,7 @@ export interface BoardPageProps {
 }
 
 // BoardDetail
-interface BoardItem {
+interface BoardDetailItem {
   id: number;
   title: string;
   author: string;
@@ -32,7 +32,7 @@ interface BoardItem {
 export interface BoardDetailProps {
   title: string;
   icon: ReactNode;
-  list: BoardItem[];
+  list: BoardDetailItem[];
   notFoundMessage?: string;
   children?: ReactNode;
 }
