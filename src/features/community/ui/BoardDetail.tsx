@@ -1,8 +1,9 @@
-import { useParams } from 'react-router';
-import { useAuthStore } from '@/shared/model/authStore';
 import dayjs from 'dayjs';
+import { useParams } from 'react-router';
 
 import type { BoardDetailProps } from '../model/boardType';
+
+import { useAuthStore } from '@/shared/model/authStore';
 
 export default function BoardDetail({
   title,
@@ -12,7 +13,6 @@ export default function BoardDetail({
   notFoundMessage = '존재하지 않는 게시글입니다.',
   children,
 }: BoardDetailProps) {
-
   const { id } = useParams();
   const { user } = useAuthStore(); // 로그인 유저
 
@@ -22,12 +22,11 @@ export default function BoardDetail({
     return <div>{notFoundMessage}</div>;
   }
 
+  if (!user) return <div>로딩 중...</div>;
 
-if (!user) return <div>로딩 중...</div>;
+  const isMine = item.authorId === user.id;
 
-const isMine = item.authorId === user.id;
-
-const formattedDate = dayjs(item.createdAt).format('YYYY-MM-DD HH:mm');
+  const formattedDate = dayjs(item.createdAt).format('YYYY-MM-DD HH:mm');
 
   return (
     <div className="flex flex-col gap-6">
@@ -55,9 +54,7 @@ const formattedDate = dayjs(item.createdAt).format('YYYY-MM-DD HH:mm');
         )}
       </div>
 
-      <div className="whitespace-pre-line leading-7 text-sm px-2">
-        {item.content}
-      </div>
+      <div className="whitespace-pre-line leading-7 text-sm px-2">{item.content}</div>
 
       {/* 댓글 */}
       <div className="pt-20">{children}</div>

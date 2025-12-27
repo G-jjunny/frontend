@@ -1,21 +1,27 @@
 import { MessagesSquare } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { communityPostList } from '@/features/community/mock/communityMock';
+import { useCommunityPostsQuery } from '@/features/community/api/queries';
+import { mapCommunityPostToBoardItem } from '@/features/community/model/mapper';
 import { BoardPage } from '@/features/community/ui/BoardPage';
-import WriteModal from '@/features/community/ui/WriteModal';
+import PostCreateModal from '@/features/community/ui/WriteModal';
 
 export default function FreeboardPage() {
-  const freeBoardList = communityPostList.filter((post) => post.category === 'FREE');
+  const { data, isLoading } = useCommunityPostsQuery();
+
+  if (isLoading) return <div>로딩 중...</div>;
+
+  const freeBoardList = (data ?? [])
+    .filter((post) => post.category === '자유게시판')
+    .map(mapCommunityPostToBoardItem);
 
   return (
     <BoardPage
       title="자유게시판"
       icon={<MessagesSquare />}
       list={freeBoardList}
-      ModalComponent={WriteModal}
+      ModalComponent={(props) => <PostCreateModal {...props} category="자유게시판" />}
       canWrite={true}
-      onSubmit={(data) => console.log(data)}
       columns={[
         { header: 'NO', key: 'id', render: (_, idx) => freeBoardList.length - idx },
         {
@@ -28,7 +34,11 @@ export default function FreeboardPage() {
           ),
         },
         { header: '작성자', key: 'author' },
-        { header: '작성일자', key: 'createdAt' },
+        {
+          header: '작성일자',
+          key: 'createdAt',
+          render: (item) => new Date(item.createdAt).toLocaleDateString(),
+        },
       ]}
     />
   );

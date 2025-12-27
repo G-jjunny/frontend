@@ -4,7 +4,6 @@ import { usePagenation } from '../hooks/usePagenation';
 
 import Pagenation from './Pagenation';
 import SearchInput from './SearchInput';
-import PostCreateModal from './WriteModal';
 
 export interface BaseRow {
   id: number | string;
@@ -22,10 +21,11 @@ interface BoardProps<T extends BaseRow> {
   icon?: React.ReactNode;
   list: T[];
   canWrite?: boolean;
-  onSubmit?: (data: unknown) => void;
+  category?: '공지' | '자유게시판';
   ModalComponent?: React.ComponentType<{
     onClose: () => void;
     onSubmit: (data: unknown) => void;
+    category: '공지' | '자유게시판';
   }>;
   columns: Column<T>[];
 }
@@ -35,24 +35,27 @@ export function BoardPage<T extends BaseRow>({
   icon,
   list,
   canWrite,
-  // onSubmit,
-  // ModalComponent,
+  category,
+  ModalComponent,
   columns,
 }: BoardProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredList = useMemo(() => 
-  !searchTerm 
-    ? list 
-    : list.filter(item => 
-        columns.some(col => {
-          const value = item[col.key];
-          return value != null && String(value).toLowerCase().includes(searchTerm.toLowerCase());
-        })
-      ), 
-  [searchTerm, list, columns]
-);
+  const filteredList = useMemo(
+    () =>
+      !searchTerm
+        ? list
+        : list.filter((item) =>
+            columns.some((col) => {
+              const value = item[col.key];
+              return (
+                value != null && String(value).toLowerCase().includes(searchTerm.toLowerCase())
+              );
+            }),
+          ),
+    [searchTerm, list, columns],
+  );
 
   const { currentPage, totalPages, currentItems, setCurrentPage } = usePagenation({
     items: filteredList,
@@ -79,8 +82,12 @@ export function BoardPage<T extends BaseRow>({
             </button>
           )}
 
-          {isOpen && (
-            <PostCreateModal onClose={() => setIsOpen(false)} />
+          {isOpen && ModalComponent && (
+            <ModalComponent
+              onClose={() => setIsOpen(false)}
+              category={category!}
+              onSubmit={(data) => console.log(data)}
+            />
           )}
         </div>
       </div>

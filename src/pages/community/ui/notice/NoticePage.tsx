@@ -1,19 +1,17 @@
 import { Megaphone } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { BoardPage } from '@/features/community/ui/BoardPage';
-import WriteModal from '@/features/community/ui/WriteModal';
-import { ROLE } from '@/features/pay/model/role';
 import { useCommunityPostsQuery } from '@/features/community/api/queries';
+import { BoardPage } from '@/features/community/ui/BoardPage';
+import PostCreateModal from '@/features/community/ui/WriteModal';
+import { ROLE } from '@/features/pay/model/role';
 
 export default function NoticePage() {
   const user = { role: ROLE.MANAGER };
 
   const { data, isLoading } = useCommunityPostsQuery();
 
-  const noticeList = (data ?? []).filter(
-    (post) => post.category === '공지',
-  );
+  const noticeList = (data ?? []).filter((post) => post.category === '공지');
 
   if (isLoading) {
     return <div>로딩 중...</div>;
@@ -25,7 +23,7 @@ export default function NoticePage() {
       icon={<Megaphone />}
       list={noticeList}
       canWrite={user.role === ROLE.MANAGER}
-      ModalComponent={WriteModal}
+      ModalComponent={(props) => <PostCreateModal {...props} category="공지" />}
       columns={[
         {
           header: 'NO',
@@ -48,8 +46,7 @@ export default function NoticePage() {
         {
           header: '작성일자',
           key: 'created_at',
-          render: (item) =>
-            new Date(item.created_at).toLocaleDateString(),
+          render: (item) => new Date(item.created_at).toLocaleDateString(),
         },
       ]}
     />

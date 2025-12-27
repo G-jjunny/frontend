@@ -1,5 +1,5 @@
-import type { CommunityPostDTO } from '../api/dto';
 import type { BoardDetailItem } from './boardType';
+import type { CommunityPostDTO } from '../api/dto';
 
 export interface BoardItem {
   id: number;
@@ -9,9 +9,7 @@ export interface BoardItem {
   createdAt: string;
 }
 
-export function mapCommunityPostToBoardItem(
-  dto: CommunityPostDTO,
-): BoardItem {
+export function mapCommunityPostToBoardItem(dto: CommunityPostDTO): BoardItem {
   return {
     id: dto.id,
     title: dto.title,
@@ -21,16 +19,14 @@ export function mapCommunityPostToBoardItem(
   };
 }
 
-export function mapBoardDetail(res: any): BoardDetailItem {
+export function mapBoardDetail(dto: CommunityPostDTO): BoardDetailItem {
   return {
-    id: res.id,
-    title: res.title,
-    content: res.content,
-
-    authorId: res.author_id,
-    authorName: res.author_name,
-
-    createdAt: res.created_at,
-    updatedAt: res.updated_at,
+    id: dto.id,
+    title: dto.title,
+    content: dto.content,
+    authorId: dto.author_id,
+    authorName: dto.author_name,
+    createdAt: dto.created_at,
+    updatedAt: dto.updated_at,
   };
 }

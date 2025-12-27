@@ -1,13 +1,14 @@
 import { useState } from 'react';
+
 import { useCreatePostMutation } from '../api/queries';
 
 interface PostCreateModalProps {
   onClose: () => void;
+  category: '공지' | '자유게시판';
 }
 
-export default function PostCreateModal({ onClose }: PostCreateModalProps) {
+export default function PostCreateModal({ onClose, category }: PostCreateModalProps) {
   const { mutateAsync, isPending } = useCreatePostMutation();
-
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
@@ -21,12 +22,12 @@ export default function PostCreateModal({ onClose }: PostCreateModalProps) {
       await mutateAsync({
         title,
         content,
-        category: '공지',
+        category,
       });
 
       alert('등록이 완료되었습니다!');
       onClose();
-    } catch (error) {
+    } catch {
       alert('등록에 실패했습니다.');
     }
   };
@@ -40,31 +41,27 @@ export default function PostCreateModal({ onClose }: PostCreateModalProps) {
         className="bg-white w-[500px] rounded-lg p-6 flex flex-col gap-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="text-lg font-bold text-black">공지사항 작성</div>
-
+        <div className="text-lg font-bold text-black">
+          {category === '공지' ? '공지사항 작성' : '자유게시판 글 작성'}
+        </div>
         <input
-          placeholder="제목을 입력하세요"
+          placeholder="제목"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="border px-3 py-2 rounded text-black placeholder:text-gray-400 focus:outline-none"
+          className="border px-3 py-2 rounded"
         />
-
         <textarea
-          placeholder="내용을 입력하세요"
+          placeholder="내용"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="border px-3 py-2 rounded h-40 resize-none text-black placeholder:text-gray-400 focus:outline-none"
+          className="border px-3 py-2 rounded h-40 resize-none"
         />
-
         <div className="flex justify-end gap-2">
-          <button
-            onClick={onClose}
-            className="px-4 py-1 border rounded text-black"
-          >
+          <button onClick={onClose} className="px-4 py-1 border rounded">
             취소
           </button>
           <button
-            onClick={handleSubmit}
+            onClick={() => void handleSubmit()} // async 함수 안전하게 호출
             disabled={isPending}
             className="px-4 py-1 bg-mega text-white rounded disabled:opacity-50"
           >

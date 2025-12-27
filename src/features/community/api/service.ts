@@ -1,9 +1,6 @@
 import { apiClient } from '../../../shared/api/apiClients';
-import type {
-    CommunityPostDTO,
-  CreatePostRequestDTO,
-  CreatePostResponseDTO,
-} from './dto';
+
+import type { CommunityPostDTO, CreatePostRequestDTO, CreatePostResponseDTO } from './dto';
 
 // POST
 export const createPost = (data: CreatePostRequestDTO) =>
@@ -18,7 +15,7 @@ export const getCommunityPosts = () =>
     url: '/api/community/posts',
   });
 
-  // 게시글 상세
+// 게시글 상세
 export const getCommunityPostById = (id: number) =>
   apiClient.get<CommunityPostDTO>({
     url: `/api/community/posts/${id}`,

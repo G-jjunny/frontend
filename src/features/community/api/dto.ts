@@ -2,7 +2,7 @@
 export interface CreatePostRequestDTO {
   title: string;
   content: string;
-  category: '공지';
+  category: '공지' | '자유게시판' | '근무교대' | '휴무신청';
 }
 
 export interface CreatePostResponseDTO {

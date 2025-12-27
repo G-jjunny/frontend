@@ -1,5 +1,7 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
+
 import { createPost, getCommunityPosts, getCommunityPostById } from './service';
+
 import type { CreatePostRequestDTO } from './dto';
 
 // POST
