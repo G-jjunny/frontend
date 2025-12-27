@@ -35,31 +35,27 @@ export function BoardPage<T extends BaseRow>({
   icon,
   list,
   canWrite,
-  onSubmit,
-  ModalComponent,
+  // onSubmit,
+  // ModalComponent,
   columns,
 }: BoardProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredList = useMemo(() => {
-    if (!searchTerm) return list;
-
-    const lowerSearch = searchTerm.toLowerCase();
-
-    return list.filter((item) =>
-      columns.some((col) => {
-        const value = item[col.key];
-
-        if (value === null || value === undefined) return false;
-
-        return String(value).toLowerCase().includes(lowerSearch);
-      }),
-    );
-  }, [searchTerm, list, columns]);
+  const filteredList = useMemo(() => 
+  !searchTerm 
+    ? list 
+    : list.filter(item => 
+        columns.some(col => {
+          const value = item[col.key];
+          return value != null && String(value).toLowerCase().includes(searchTerm.toLowerCase());
+        })
+      ), 
+  [searchTerm, list, columns]
+);
 
   const { currentPage, totalPages, currentItems, setCurrentPage } = usePagenation({
-    items: [...filteredList].reverse(),
+    items: filteredList,
     itemsPerPage: 10,
   });
 

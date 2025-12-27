@@ -1,5 +1,6 @@
 import { useParams } from 'react-router';
-import { useAuthStore } from '@/shared/model/authStore'; // 예시
+import { useAuthStore } from '@/shared/model/authStore';
+import dayjs from 'dayjs';
 
 import type { BoardDetailProps } from '../model/boardType';
 
@@ -7,10 +8,11 @@ export default function BoardDetail({
   title,
   icon,
   list,
-  currentUserId,
+  // currentUserId,
   notFoundMessage = '존재하지 않는 게시글입니다.',
   children,
 }: BoardDetailProps) {
+
   const { id } = useParams();
   const { user } = useAuthStore(); // 로그인 유저
 
@@ -25,6 +27,8 @@ if (!user) return <div>로딩 중...</div>;
 
 const isMine = item.authorId === user.id;
 
+const formattedDate = dayjs(item.createdAt).format('YYYY-MM-DD HH:mm');
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-2 text-2xl font-bold">
@@ -38,7 +42,7 @@ const isMine = item.authorId === user.id;
         <div>
           <div className="text-lg font-bold">{item.title}</div>
           <div className="text-sm text-gray-500">
-            {item.authorName} · {item.createdAt}
+            {item.authorName} · {formattedDate}
           </div>
         </div>
 
