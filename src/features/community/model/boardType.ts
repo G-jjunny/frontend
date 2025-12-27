@@ -21,18 +21,23 @@ export interface BoardPageProps {
 }
 
 // BoardDetail
-interface BoardDetailItem {
+export interface BoardDetailItem {
   id: number;
   title: string;
-  author: string;
-  createdAt: string;
   content: string;
+
+  authorId: number;
+  authorName: string;
+
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface BoardDetailProps {
   title: string;
   icon: ReactNode;
   list: BoardDetailItem[];
+  currentUserId: number;
   notFoundMessage?: string;
   children?: ReactNode;
 }

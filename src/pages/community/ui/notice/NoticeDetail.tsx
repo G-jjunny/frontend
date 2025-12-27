@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 import BoardDetail from '@/features/community/ui/BoardDetail';
 import CommentSection from '@/features/community/ui/comment/CommentSection';
 import { useCommunityPostDetailQuery } from '@/features/community/api/queries';
-import { mapCommunityPostToBoardItem } from '@/features/community/model/mapper';
+import { mapBoardDetail, mapCommunityPostToBoardItem } from '@/features/community/model/mapper';
 
 export default function NoticeDetail() {
   const { id } = useParams<{ id: string }>();
@@ -16,13 +16,16 @@ export default function NoticeDetail() {
   if (isLoading) return <div>로딩 중...</div>;
   if (!data) return <div>존재하지 않는 공지사항입니다.</div>;
 
-  const boardItem = mapCommunityPostToBoardItem(data);
+  const boardItem = mapBoardDetail(data);
+
+  console.log('NoticeDetail data:', data);
 
   return (
     <BoardDetail
       title="공지사항"
       icon={<Megaphone />}
       list={[boardItem]}
+      currentUserId={1}
       notFoundMessage="존재하지 않는 공지사항입니다."
     >
       <CommentSection
