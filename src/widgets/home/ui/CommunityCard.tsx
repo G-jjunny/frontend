@@ -1,12 +1,17 @@
+import { useQuery } from '@tanstack/react-query';
 import { SquarePlus } from 'lucide-react';
 import { Link } from 'react-router';
 
+import { postQueries } from '@/entities/post/api/queries';
 import ComunityList from '@/features/home/ui/ComunityList';
 import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { ROUTES } from '@/shared/constants/routes';
 
 const CommunityCard = () => {
+  const { data: posts = [], isLoading, isError } = useQuery(postQueries.allPosts());
+  console.log('posts', posts);
+
   return (
     <Card>
       <CardHeader>
@@ -20,10 +25,9 @@ const CommunityCard = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ComunityList />
-        <ComunityList />
-        <ComunityList />
-        <ComunityList />
+        {posts.length > 0
+          ? posts.map((post) => <ComunityList key={post.id} post={post} />)
+          : '작성된 게시물이 없습니다.'}
       </CardContent>
     </Card>
   );
