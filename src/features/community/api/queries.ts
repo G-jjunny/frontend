@@ -6,10 +6,12 @@ import {
   getCommunityPostById,
   updatePost,
   deletePost,
+  createComment,
 } from './service';
 
 import type { CreatePostRequestDTO } from './dto';
 
+// 🔖 게시글
 // POST
 export function useCreatePostMutation() {
   const queryClient = useQueryClient();
@@ -60,6 +62,23 @@ export function useDeletePostMutation() {
     mutationFn: (id: number) => deletePost(id),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['communityPosts'] });
+    },
+  });
+}
+
+// 🔖 댓글
+// POST
+export function useCreateCommentMutation(postId: number) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (content: string) => createComment(postId, { content }),
+
+    onSuccess: () => {
+      // 🔥 핵심
+      void queryClient.invalidateQueries({
+        queryKey: ['communityPost', postId],
+      });
     },
   });
 }

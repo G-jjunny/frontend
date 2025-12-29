@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react';
-
 // BoardPage
 interface BoardItem {
   id: number;
@@ -35,11 +33,6 @@ export interface BoardDetailItem {
 }
 
 export interface BoardDetailProps {
+  icon: React.ReactNode;
   title: string;
-  icon: ReactNode;
-  list: BoardDetailItem[];
-  setList?: React.Dispatch<React.SetStateAction<BoardDetailItem[]>>;
-  currentUserId: number;
-  notFoundMessage?: string;
-  children?: ReactNode;
 }

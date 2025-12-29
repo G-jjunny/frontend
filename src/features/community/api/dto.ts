@@ -39,3 +39,8 @@ export interface CommunityPostDTO {
   updated_at: string;
   comments: CommentDTO[];
 }
+
+// 댓글 생성 DTO
+export interface CreateCommentRequestDTO {
+  content: string;
+}

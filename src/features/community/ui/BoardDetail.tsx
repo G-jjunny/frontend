@@ -4,51 +4,53 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { toast } from 'sonner';
 
-import { useDeletePostMutation, useUpdatePostMutation } from '../api/queries';
+import {
+  useCommunityPostDetailQuery,
+  useDeletePostMutation,
+  useUpdatePostMutation,
+} from '../api/queries';
 
+import CommentSection from './comment/CommentSection';
 import EditPostModal from './EditModal';
 
 import type { BoardDetailProps } from '../model/boardType';
 
 import { useAuthStore } from '@/shared/model/authStore';
 
-export default function BoardDetail({
-  title,
-  icon,
-  list,
-  notFoundMessage = '존재하지 않는 게시글입니다.',
-  children,
-}: BoardDetailProps) {
+export default function BoardDetail({ icon, title }: BoardDetailProps) {
   const { id } = useParams<{ id: string }>();
+  const postId = Number(id);
+
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const queryClient = useQueryClient();
 
-  const item = list.find((item) => item.id === Number(id));
-  const isMine = item?.authorId === user?.id;
-
-  const [isEditOpen, setIsEditOpen] = useState(false);
+  const { data: post, isLoading, isError } = useCommunityPostDetailQuery(postId);
 
   const updateMutation = useUpdatePostMutation();
   const deleteMutation = useDeletePostMutation();
-  const queryClient = useQueryClient();
 
-  if (!item) return <div>{notFoundMessage}</div>;
-  if (!user) return <div>로딩 중...</div>;
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
+  if (isLoading) return <div>로딩 중...</div>;
+  if (isError || !post) return <div>존재하지 않는 게시글입니다.</div>;
+  if (!user) return <div>로그인이 필요합니다.</div>;
+
+  const isMine = post.author_id === user.id;
+  const formattedDate = dayjs(post.created_at).format('YYYY-MM-DD HH:mm');
 
   // 수정 핸들러
   const handleUpdate = async (data: { title: string; content: string }) => {
     try {
-      await updateMutation.mutateAsync({ id: item.id, data });
+      await updateMutation.mutateAsync({ id: post.id, data });
 
-      queryClient.setQueryData(['communityPost', item.id], (prev: typeof item | undefined) => {
-        if (!prev) return { ...item, ...data };
-        return { ...prev, ...data };
+      queryClient.setQueryData(['communityPost', post.id], {
+        ...post,
+        ...data,
       });
 
-      void queryClient.invalidateQueries({ queryKey: ['communityPosts'] });
-      setIsEditOpen(false);
-
       toast.success('수정되었습니다!');
+      setIsEditOpen(false);
     } catch {
       toast.error('수정이 실패되었습니다.');
     }
@@ -59,15 +61,13 @@ export default function BoardDetail({
     if (!confirm('정말 삭제하시겠습니까?')) return;
 
     try {
-      await deleteMutation.mutateAsync(item.id);
+      await deleteMutation.mutateAsync(post.id);
       toast.success('삭제되었습니다.');
       void navigate(-1);
     } catch {
       toast.error('삭제가 실패되었습니다.');
     }
   };
-
-  const formattedDate = dayjs(item.createdAt).format('YYYY-MM-DD HH:mm');
 
   return (
     <div className="flex flex-col gap-6">
@@ -80,9 +80,9 @@ export default function BoardDetail({
 
       <div className="flex items-center justify-between px-2">
         <div>
-          <div className="text-lg font-bold">{item.title}</div>
+          <div className="text-lg font-bold">{post.title}</div>
           <div className="text-sm text-gray-500">
-            {item.authorName} · {formattedDate}
+            {post.author_name} · {formattedDate}
           </div>
         </div>
 
@@ -103,20 +103,22 @@ export default function BoardDetail({
             </button>
           </div>
         )}
-        {isEditOpen && (
-          <EditPostModal
-            onClose={() => setIsEditOpen(false)}
-            onSubmit={(data) => void handleUpdate(data)}
-            category={item.category}
-            initialData={{ title: item.title, content: item.content }}
-          />
-        )}
       </div>
 
-      <div className="whitespace-pre-line leading-7 text-sm px-2">{item.content}</div>
+      <div className="whitespace-pre-line leading-7 text-sm px-2">{post.content}</div>
 
-      {/* 댓글 */}
-      <div className="pt-20">{children}</div>
+      <CommentSection postId={post.id} currentUserId={user.id} comments={post.comments} />
+
+      {isEditOpen && (
+        <EditPostModal
+          onClose={() => setIsEditOpen(false)}
+          onSubmit={(content) => {
+            void handleUpdate(content);
+          }}
+          category={post.category}
+          initialData={{ title: post.title, content: post.content }}
+        />
+      )}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { useState } from 'react';
 interface EditPostModalProps {
   onClose: () => void;
   onSubmit: (data: { title: string; content: string }) => void;
-  category: '공지' | '자유게시판';
+  category: string;
   initialData: { title: string; content: string };
 }
 

@@ -1,7 +1,14 @@
 import { apiClient } from '../../../shared/api/apiClients';
 
-import type { CommunityPostDTO, CreatePostRequestDTO, CreatePostResponseDTO } from './dto';
+import type {
+  CommentDTO,
+  CommunityPostDTO,
+  CreateCommentRequestDTO,
+  CreatePostRequestDTO,
+  CreatePostResponseDTO,
+} from './dto';
 
+// 🔖 게시글
 // POST
 export const createPost = (data: CreatePostRequestDTO) =>
   apiClient.post<CreatePostResponseDTO>({
@@ -15,21 +22,29 @@ export const getCommunityPosts = () =>
     url: '/api/community/posts',
   });
 
-// 게시글 상세
+// Detail GET
 export const getCommunityPostById = (id: number) =>
   apiClient.get<CommunityPostDTO>({
     url: `/api/community/posts/${id}`,
   });
 
-// 게시글 수정
+// PATCH
 export const updatePost = (id: number, data: Partial<CreatePostRequestDTO>) =>
   apiClient.patch<CommunityPostDTO>({
     url: `/api/community/posts/${id}`,
     data,
   });
 
-// 게시글 삭제
+// DELETE
 export const deletePost = (id: number) =>
   apiClient.delete<{ success: boolean }>({
     url: `/api/community/posts/${id}`,
+  });
+
+// 🔖 댓글
+// POST
+export const createComment = (postId: number, data: CreateCommentRequestDTO) =>
+  apiClient.post<CommentDTO>({
+    url: `/api/community/posts/${postId}/comments`,
+    data,
   });
