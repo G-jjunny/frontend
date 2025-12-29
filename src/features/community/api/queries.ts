@@ -1,6 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { createPost, getCommunityPosts, getCommunityPostById } from './service';
+import {
+  createPost,
+  getCommunityPosts,
+  getCommunityPostById,
+  updatePost,
+  deletePost,
+} from './service';
 
 import type { CreatePostRequestDTO } from './dto';
 
@@ -11,7 +17,7 @@ export function useCreatePostMutation() {
   return useMutation({
     mutationFn: (data: CreatePostRequestDTO) => createPost(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['communityPosts'] });
+      void queryClient.invalidateQueries({ queryKey: ['communityPosts'] });
     },
   });
 }
@@ -30,5 +36,30 @@ export function useCommunityPostDetailQuery(id: number) {
     queryKey: ['communityPost', id],
     queryFn: () => getCommunityPostById(id),
     enabled: !!id,
+  });
+}
+
+// PUT
+export function useUpdatePostMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: Partial<CreatePostRequestDTO> }) =>
+      updatePost(id, data),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['communityPosts'] });
+    },
+  });
+}
+
+// DELETE
+export function useDeletePostMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) => deletePost(id),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['communityPosts'] });
+    },
   });
 }

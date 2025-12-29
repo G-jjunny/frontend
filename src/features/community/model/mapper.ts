@@ -28,5 +28,6 @@ export function mapBoardDetail(dto: CommunityPostDTO): BoardDetailItem {
     authorName: dto.author_name,
     createdAt: dto.created_at,
     updatedAt: dto.updated_at,
+    category: dto.category === '공지' ? '공지' : '자유게시판',
   };
 }

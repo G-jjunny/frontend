@@ -31,12 +31,14 @@ export interface BoardDetailItem {
 
   createdAt: string;
   updatedAt: string;
+  category: '공지' | '자유게시판';
 }
 
 export interface BoardDetailProps {
   title: string;
   icon: ReactNode;
   list: BoardDetailItem[];
+  setList?: React.Dispatch<React.SetStateAction<BoardDetailItem[]>>;
   currentUserId: number;
   notFoundMessage?: string;
   children?: ReactNode;

@@ -1,5 +1,12 @@
+import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import { useParams } from 'react-router';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
+import { toast } from 'sonner';
+
+import { useDeletePostMutation, useUpdatePostMutation } from '../api/queries';
+
+import EditPostModal from './EditModal';
 
 import type { BoardDetailProps } from '../model/boardType';
 
@@ -9,22 +16,56 @@ export default function BoardDetail({
   title,
   icon,
   list,
-  // currentUserId,
   notFoundMessage = '존재하지 않는 게시글입니다.',
   children,
 }: BoardDetailProps) {
-  const { id } = useParams();
-  const { user } = useAuthStore(); // 로그인 유저
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { user } = useAuthStore();
 
   const item = list.find((item) => item.id === Number(id));
+  const isMine = item?.authorId === user?.id;
 
-  if (!item) {
-    return <div>{notFoundMessage}</div>;
-  }
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
+  const updateMutation = useUpdatePostMutation();
+  const deleteMutation = useDeletePostMutation();
+  const queryClient = useQueryClient();
+
+  if (!item) return <div>{notFoundMessage}</div>;
   if (!user) return <div>로딩 중...</div>;
 
-  const isMine = item.authorId === user.id;
+  // 수정 핸들러
+  const handleUpdate = async (data: { title: string; content: string }) => {
+    try {
+      await updateMutation.mutateAsync({ id: item.id, data });
+
+      queryClient.setQueryData(['communityPost', item.id], (prev: typeof item | undefined) => {
+        if (!prev) return { ...item, ...data };
+        return { ...prev, ...data };
+      });
+
+      void queryClient.invalidateQueries({ queryKey: ['communityPosts'] });
+      setIsEditOpen(false);
+
+      toast.success('수정되었습니다!');
+    } catch {
+      toast.error('수정이 실패되었습니다.');
+    }
+  };
+
+  // 삭제 핸들러
+  const handleDelete = async () => {
+    if (!confirm('정말 삭제하시겠습니까?')) return;
+
+    try {
+      await deleteMutation.mutateAsync(item.id);
+      toast.success('삭제되었습니다.');
+      void navigate(-1);
+    } catch {
+      toast.error('삭제가 실패되었습니다.');
+    }
+  };
 
   const formattedDate = dayjs(item.createdAt).format('YYYY-MM-DD HH:mm');
 
@@ -47,10 +88,28 @@ export default function BoardDetail({
 
         {isMine && (
           <div className="flex gap-2 opacity-70">
-            <button className="text-sm text-blue-600 hover:underline">수정</button>
+            <button
+              onClick={() => setIsEditOpen(true)}
+              className="text-sm text-blue-600 hover:underline"
+            >
+              수정
+            </button>
             <span> | </span>
-            <button className="text-sm text-red-600 hover:underline">삭제</button>
+            <button
+              onClick={() => void handleDelete()}
+              className="text-sm text-red-600 hover:underline"
+            >
+              삭제
+            </button>
           </div>
+        )}
+        {isEditOpen && (
+          <EditPostModal
+            onClose={() => setIsEditOpen(false)}
+            onSubmit={(data) => void handleUpdate(data)}
+            category={item.category}
+            initialData={{ title: item.title, content: item.content }}
+          />
         )}
       </div>
 

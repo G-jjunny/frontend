@@ -5,6 +5,7 @@ import { useCreatePostMutation } from '../api/queries';
 interface PostCreateModalProps {
   onClose: () => void;
   category: '공지' | '자유게시판';
+  onSubmit: (data: any) => void;
 }
 
 export default function PostCreateModal({ onClose, category }: PostCreateModalProps) {
