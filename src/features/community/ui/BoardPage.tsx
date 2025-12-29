@@ -5,30 +5,7 @@ import { usePagenation } from '../hooks/usePagenation';
 import Pagenation from './Pagenation';
 import SearchInput from './SearchInput';
 
-export interface BaseRow {
-  id: number | string;
-}
-
-export interface Column<T extends BaseRow> {
-  header: string;
-  key: keyof T;
-  width?: string;
-  render?: (item: T, index: number) => React.ReactNode;
-}
-
-interface BoardProps<T extends BaseRow> {
-  title: string;
-  icon?: React.ReactNode;
-  list: T[];
-  canWrite?: boolean;
-  category?: '공지' | '자유게시판';
-  ModalComponent?: React.ComponentType<{
-    onClose: () => void;
-    onSubmit: (data: unknown) => void;
-    category: '공지' | '자유게시판';
-  }>;
-  columns: Column<T>[];
-}
+import type { BaseRow, BoardProps } from '../model/boardType';
 
 export function BoardPage<T extends BaseRow>({
   title,

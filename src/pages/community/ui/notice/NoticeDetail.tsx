@@ -26,10 +26,14 @@ export default function NoticeDetail() {
       title="공지사항"
       icon={<Megaphone />}
       list={[boardItem]}
-      currentUserId={1}
       notFoundMessage="존재하지 않는 공지사항입니다."
     >
-      <CommentSection postId={data.id} postType="notice" currentUserId={1} />
+      <CommentSection
+        postId={data.id}
+        comments={data.comments}
+        postType="notice"
+        currentUserId={1}
+      />
     </BoardDetail>
   );
 }

@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 // BoardPage
 interface BoardItem {
   id: number;
@@ -18,6 +20,31 @@ export interface BoardPageProps {
   }>;
 }
 
+export interface BaseRow {
+  id: number | string;
+}
+
+export interface Column<T extends BaseRow> {
+  header: string;
+  key: keyof T;
+  width?: string;
+  render?: (item: T, index: number) => React.ReactNode;
+}
+
+export interface BoardProps<T extends BaseRow> {
+  title: string;
+  icon?: React.ReactNode;
+  list: T[];
+  canWrite?: boolean;
+  category?: '공지' | '자유게시판';
+  ModalComponent?: React.ComponentType<{
+    onClose: () => void;
+    onSubmit: (data: unknown) => void;
+    category: '공지' | '자유게시판';
+  }>;
+  columns: Column<T>[];
+}
+
 // BoardDetail
 export interface BoardDetailItem {
   id: number;
@@ -33,6 +60,9 @@ export interface BoardDetailItem {
 }
 
 export interface BoardDetailProps {
-  icon: React.ReactNode;
   title: string;
+  icon: ReactNode;
+  list: BoardDetailItem[];
+  notFoundMessage?: string;
+  children?: ReactNode;
 }

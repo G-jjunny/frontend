@@ -24,11 +24,14 @@ export default function FreeBoardDetail() {
       title="자유게시판"
       icon={<MessagesSquare />}
       list={[boardItem]}
-      currentUserId={1}
       notFoundMessage="존재하지 않는 자유게시글입니다."
     >
-      {/* currentUserId - 임의 설정 */}
-      <CommentSection postId={Number(id)} postType="freeboard" currentUserId={1} />
+      <CommentSection
+        postId={Number(id)}
+        comments={data.comments}
+        postType="freeboard"
+        currentUserId={1}
+      />
     </BoardDetail>
   );
 }

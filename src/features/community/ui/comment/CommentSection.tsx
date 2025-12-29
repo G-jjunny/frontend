@@ -13,6 +13,7 @@ interface CommentSectionProps {
   postId: number;
   currentUserId: number;
   comments: CommentDTO[];
+  postType: string;
 }
 
 export default function CommentSection({ postId, currentUserId, comments }: CommentSectionProps) {

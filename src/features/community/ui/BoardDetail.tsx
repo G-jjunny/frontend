@@ -107,7 +107,12 @@ export default function BoardDetail({ icon, title }: BoardDetailProps) {
 
       <div className="whitespace-pre-line leading-7 text-sm px-2">{post.content}</div>
 
-      <CommentSection postId={post.id} currentUserId={user.id} comments={post.comments} />
+      <CommentSection
+        postId={post.id}
+        postType={post.category === '공지' ? 'notice' : 'freeboard'}
+        currentUserId={user.id}
+        comments={post.comments}
+      />
 
       {isEditOpen && (
         <EditPostModal
