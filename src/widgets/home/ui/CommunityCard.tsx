@@ -3,7 +3,7 @@ import { SquarePlus } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { postQueries } from '@/entities/post/api/queries';
-import ComunityList from '@/features/home/ui/ComunityList';
+import ComunityList from '@/features/home/ui/CommunityList';
 import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
 import { ROUTES } from '@/shared/constants/routes';
