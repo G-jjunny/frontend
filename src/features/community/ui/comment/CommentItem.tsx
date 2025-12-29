@@ -1,77 +1,71 @@
 import { useState } from 'react';
-
-import { formatDateTime } from '../../model/formatData';
-
-import type { Comment } from '../../mock/commentMock';
+import type { CommentDTO } from '../../api/dto';
+import dayjs from 'dayjs';
 
 interface CommentItemProps {
-  comment: Comment;
-  isMine: boolean;
+  comment: CommentDTO;
+  currentUserId: number;
   onUpdate: (id: number, content: string) => void;
   onDelete: (id: number) => void;
 }
 
-export default function CommentItem({ comment, isMine, onUpdate, onDelete }: CommentItemProps) {
+export default function CommentItem({
+  comment,
+  currentUserId,
+  onUpdate,
+  onDelete,
+}: CommentItemProps) {
+  const isMine = comment.author_id === currentUserId;
+
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(comment.content);
+  const formattedDate = dayjs(comment.created_at).format('YYYY-MM-DD HH:mm');
 
-  const isEdited = comment.created_at !== comment.updated_at;
+  const handleSave = () => {
+    if (!value.trim()) return;
+    onUpdate(comment.id, value);
+    setIsEditing(false);
+  };
 
   const handleCancel = () => {
-    setValue(comment.content); // 원래 내용 복원
+    setValue(comment.content);
     setIsEditing(false);
   };
 
   return (
-    <div className="border rounded p-3 text-sm bg-gray-50">
-      <div className="flex justify-between">
-        <div>
-          <span className="font-semibold">{comment.author_name}</span>
-          <span className="ml-2 text-xs text-gray-500">{comment.author_position}</span>
-
-          <div className="text-xs text-gray-400 mt-1">
-            {formatDateTime(comment.created_at)}
-            {isEdited && (
-              <span className="ml-2">· 수정됨 ({formatDateTime(comment.updated_at)})</span>
-            )}
-          </div>
-        </div>
-
-        {isMine && !isEditing && (
-          <div className="flex gap-2 text-xs">
-            <button onClick={() => setIsEditing(true)}>수정</button>
-            <button onClick={() => onDelete(comment.id)}>삭제</button>
-          </div>
-        )}
+    <li className="border rounded-md p-3">
+      <div className='flex justify-between'>
+        <div className="text-sm font-bold">{comment.author_name}</div>
+        <div className="text-[12px] text-gray-500">{formattedDate}</div>
       </div>
 
-      {isEditing ? (
-        <>
-          <textarea
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            className="w-full border mt-2 p-2"
-          />
-
-          <div className="flex gap-2 mt-2">
-            <button
-              onClick={() => {
-                onUpdate(comment.id, value);
-                setIsEditing(false);
-              }}
-              className="text-xs px-3 py-1 bg-mega text-white rounded"
-            >
-              저장
-            </button>
-
-            <button onClick={handleCancel} className="text-xs px-3 py-1 border rounded">
-              취소
-            </button>
-          </div>
-        </>
+      {!isEditing ? (
+        <p className="mt-2 text-sm whitespace-pre-line">{comment.content}</p>
       ) : (
-        <p className="mt-2 whitespace-pre-line">{comment.content}</p>
+        <textarea
+          className="mt-2 w-full border rounded-md p-2 text-sm"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
       )}
-    </div>
+
+      {isMine && (
+        <div className="mt-2 flex gap-2 text-xs text-gray-500">
+          {!isEditing ? (
+            <>
+              <button onClick={() => setIsEditing(true)}>수정</button>
+              <button onClick={() => onDelete(comment.id)}>삭제</button>
+            </>
+          ) : (
+            <>
+              <button onClick={handleSave} className="text-blue-600">
+                저장
+              </button>
+              <button onClick={handleCancel}>취소</button>
+            </>
+          )}
+        </div>
+      )}
+    </li>
   );
 }

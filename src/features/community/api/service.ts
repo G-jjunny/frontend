@@ -48,3 +48,16 @@ export const createComment = (postId: number, data: CreateCommentRequestDTO) =>
     url: `/api/community/posts/${postId}/comments`,
     data,
   });
+
+// PATCH
+export const updateComment = (comment_id: number, content: string) =>
+  apiClient.patch<CommentDTO>({
+    url: `/api/community/comments/${comment_id}`,
+    data: { content },
+  });
+
+// DELETE
+export const deleteComment = (comment_id: number) =>
+  apiClient.delete<{ success: boolean }>({
+    url: `/api/community/comments/${comment_id}`,
+  });

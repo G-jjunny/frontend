@@ -1,4 +1,5 @@
-import type { CommentDTO } from '../../api/dto';
+import type { CommentDTO } from "../../api/dto";
+import CommentItem from "./CommentItem";
 
 interface CommentListProps {
   comments: CommentDTO[];
@@ -15,36 +16,15 @@ export default function CommentList({
 }: CommentListProps) {
   return (
     <ul className="flex flex-col gap-4">
-      {comments.map((comment) => {
-        const isMine = comment.author_id === currentUserId;
-
-        return (
-          <li key={comment.id} className="border-b pb-3">
-            <div className="flex justify-between items-center">
-              <div className="text-sm font-semibold">{comment.author_name}</div>
-
-              {isMine && (
-                <div className="flex gap-2 text-xs opacity-70">
-                  <button
-                    onClick={() => onUpdate(comment.id, comment.content)}
-                    className="hover:underline"
-                  >
-                    수정
-                  </button>
-                  <button
-                    onClick={() => onDelete(comment.id)}
-                    className="hover:underline text-red-500"
-                  >
-                    삭제
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <div className="text-sm mt-1 whitespace-pre-line">{comment.content}</div>
-          </li>
-        );
-      })}
+      {comments.map((comment) => (
+        <CommentItem
+          key={comment.id}
+          comment={comment}
+          currentUserId={currentUserId}
+          onUpdate={onUpdate}
+          onDelete={onDelete}
+        />
+      ))}
     </ul>
   );
 }

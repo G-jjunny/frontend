@@ -7,6 +7,8 @@ import {
   updatePost,
   deletePost,
   createComment,
+  updateComment,
+  deleteComment,
 } from './service';
 
 import type { CreatePostRequestDTO } from './dto';
@@ -76,6 +78,37 @@ export function useCreateCommentMutation(postId: number) {
 
     onSuccess: () => {
       // 🔥 핵심
+      void queryClient.invalidateQueries({
+        queryKey: ['communityPost', postId],
+      });
+    },
+  });
+}
+
+// PATCH
+export function useUpdateCommentMutation(postId: number) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, content }: { id: number; content: string }) =>
+      updateComment(id, content),
+
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: ['communityPost', postId],
+      });
+    },
+  });
+}
+
+//DELETE
+export function useDeleteCommentMutation(postId: number) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) => deleteComment(id),
+
+    onSuccess: () => {
       void queryClient.invalidateQueries({
         queryKey: ['communityPost', postId],
       });

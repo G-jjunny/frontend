@@ -1,4 +1,4 @@
-import { useCreateCommentMutation } from '../../api/queries';
+import { useCreateCommentMutation, useDeleteCommentMutation, useUpdateCommentMutation } from '../../api/queries';
 
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
@@ -13,6 +13,8 @@ interface CommentSectionProps {
 
 export default function CommentSection({ postId, currentUserId, comments }: CommentSectionProps) {
   const createCommentMutation = useCreateCommentMutation(postId);
+  const updateCommentMutation = useUpdateCommentMutation(postId);
+  const deleteCommentMutation = useDeleteCommentMutation(postId);
 
   const handleCreate = (content: string) => {
     createCommentMutation.mutate(content, {
@@ -22,14 +24,13 @@ export default function CommentSection({ postId, currentUserId, comments }: Comm
     });
   };
 
-  // 임의 수정 핸들러
   const handleUpdate = (id: number, content: string) => {
-    console.log('update comment', id, content);
+    updateCommentMutation.mutate({ id, content });
   };
 
-  // 임의 삭제 핸들러
   const handleDelete = (id: number) => {
-    console.log('delete comment', id);
+    if (!confirm('댓글을 삭제하시겠습니까?')) return;
+    deleteCommentMutation.mutate(id);
   };
 
   return (
