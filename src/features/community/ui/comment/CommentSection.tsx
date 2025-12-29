@@ -1,4 +1,8 @@
-import { useCreateCommentMutation, useDeleteCommentMutation, useUpdateCommentMutation } from '../../api/queries';
+import {
+  useCreateCommentMutation,
+  useDeleteCommentMutation,
+  useUpdateCommentMutation,
+} from '../../api/queries';
 
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';

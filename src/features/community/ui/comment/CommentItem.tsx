@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import type { CommentDTO } from '../../api/dto';
 import dayjs from 'dayjs';
+import { useState } from 'react';
+
+import type { CommentDTO } from '../../api/dto';
 
 interface CommentItemProps {
   comment: CommentDTO;
@@ -34,7 +35,7 @@ export default function CommentItem({
 
   return (
     <li className="border rounded-md p-3">
-      <div className='flex justify-between'>
+      <div className="flex justify-between">
         <div className="text-sm font-bold">{comment.author_name}</div>
         <div className="text-[12px] text-gray-500">{formattedDate}</div>
       </div>

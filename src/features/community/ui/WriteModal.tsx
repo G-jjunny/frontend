@@ -49,13 +49,13 @@ export default function PostCreateModal({ onClose, category }: PostCreateModalPr
           placeholder="제목"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="border px-3 py-2 rounded"
+          className="border px-3 py-2 rounded placeholder:text-gray-400"
         />
         <textarea
           placeholder="내용"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="border px-3 py-2 rounded h-40 resize-none"
+          className="border px-3 py-2 rounded h-40 resize-none placeholder:text-gray-400"
         />
         <div className="flex justify-end gap-2">
           <button onClick={onClose} className="px-4 py-1 border rounded">

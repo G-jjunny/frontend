@@ -1,5 +1,6 @@
-import type { CommentDTO } from "../../api/dto";
-import CommentItem from "./CommentItem";
+import CommentItem from './CommentItem';
+
+import type { CommentDTO } from '../../api/dto';
 
 interface CommentListProps {
   comments: CommentDTO[];

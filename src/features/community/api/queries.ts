@@ -90,8 +90,7 @@ export function useUpdateCommentMutation(postId: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, content }: { id: number; content: string }) =>
-      updateComment(id, content),
+    mutationFn: ({ id, content }: { id: number; content: string }) => updateComment(id, content),
 
     onSuccess: () => {
       void queryClient.invalidateQueries({
