@@ -27,7 +27,7 @@ export function DropdownSelect<T extends string | number>({
 
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <button
+          <div
             className="
               flex items-center justify-between 
               w-full min-w-28 px-4 py-2
@@ -36,7 +36,7 @@ export function DropdownSelect<T extends string | number>({
           >
             {value}
             <ChevronDown className="size-4" />
-          </button>
+          </div>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent className="w-40 max-h-40 overflow-y-auto bg-white p-1 rounded-md shadow-md">

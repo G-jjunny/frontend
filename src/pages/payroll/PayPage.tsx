@@ -1,8 +1,12 @@
 import { useState } from 'react';
 
-import { DropdownSelect } from '../shared/components/ui/dropdown-select';
+import { mockUserPayroll } from '../../features/pay/mock/payUserMock';
+import UserPosition from '../../features/pay/ui/UserPosition';
+import { DropdownSelect } from '../../shared/components/ui/dropdown-select';
 
-import { mockPayroll, UserPosition, ManagerPositions } from '@/features/pay';
+import type { PayrollData } from '@/features/pay/model/manager/type';
+
+import { mockPayroll, ManagerPositions } from '@/features/pay';
 import { ROLE, type Role } from '@/features/pay/model/role';
 import { isUserPosition } from '@/features/pay/model/role';
 import { Button } from '@/shared/components/ui/button';
@@ -32,15 +36,12 @@ export default function PayPage() {
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [selectedHalf, setSelectedHalf] = useState('상반기 (1~6월)');
 
-  let filteredData = [];
+  // let filteredData = [];
 
-  if (role === ROLE.MANAGER) {
-    // 관리직 → 일반직만 보이도록 필터링 (본인 급여도 제외)
-    filteredData = mockPayroll.filter((user) => isUserPosition(user.position));
-  } else {
-    // 일반직 로그인 → 본인 급여만
-    filteredData = mockPayroll.filter((user) => user.name === currentUserName);
-  }
+  const filteredData: PayrollData[] =
+    role === ROLE.MANAGER
+      ? mockPayroll.filter((user: PayrollData) => isUserPosition(user.position))
+      : mockPayroll.filter((user: PayrollData) => user.name === currentUserName);
 
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -103,7 +104,7 @@ export default function PayPage() {
         </CardContent>
       </Card>
 
-      {role === ROLE.USER && filteredData.length === 1 && <UserPosition data={filteredData} />}
+      {role === ROLE.USER && <UserPosition data={mockUserPayroll} />}
       {role === ROLE.MANAGER && filteredData.length > 0 && (
         <ManagerPositions filteredData={filteredData} />
       )}

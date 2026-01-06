@@ -11,4 +11,4 @@ export { default as ManagerPositions } from '@/features/pay/ui/ManagerPosition';
 
 export { default as mockPayroll } from '@/features/pay/mock/payMock';
 
-export { default as calculateTotals } from '@/features/pay/model/calculateTotals';
+export { default as calculateTotals } from '@/features/pay/model/manager/calculateTotals';
