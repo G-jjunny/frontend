@@ -23,7 +23,6 @@ const HomePage = () => {
           <ContentsCard title="이번달 급여" className=" w-full bg-mega-secondary text-white ">
             <PayOverview />
           </ContentsCard>
-          <ContentsCard title="커뮤니티" className=" w-full"></ContentsCard>
           <CommunityCard />
         </div>
       </div>
