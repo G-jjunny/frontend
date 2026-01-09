@@ -35,5 +35,6 @@
 @layer base {
   body {
     @apply font-brand;
+    letter-spacing: 1px;
   }
 }
