@@ -31,7 +31,7 @@
   --font-brand: 'MegaBoxLife', sans-serif;
 }
 
-/* 3. 전체 적용 (선택 사항) */
+/* 3. 전체 적용 (수정해야함 필요없는데도 들어감ㅠ) */
 @layer base {
   body {
     @apply font-brand;
