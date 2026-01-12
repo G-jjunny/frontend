@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 import { useCommunityPostsQuery } from '@/features/community/api/queries';
 import { BoardPage } from '@/features/community/ui/BoardPage';
-import PostCreateModal from '@/features/community/ui/WriteModal';
+import CommunityModal from '@/features/community/ui/CommunityModal';
 
 export default function FreeboardPage() {
   const [page, setPage] = useState(1);
@@ -27,7 +27,9 @@ export default function FreeboardPage() {
       title="자유게시판"
       icon={<MessagesSquare />}
       list={freeBoardList}
-      ModalComponent={(props) => <PostCreateModal {...props} category="자유게시판" />}
+      ModalComponent={(props) => (
+        <CommunityModal {...props} mode="create" category="자유게시판" onSubmit={async () => {}} />
+      )}
       canWrite={true}
       columns={[
         {

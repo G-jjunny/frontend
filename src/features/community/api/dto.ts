@@ -28,7 +28,7 @@ export interface CommentDTO {
 // 게시글 DTO
 export interface CommunityPostDTO {
   id: number;
-  category: string;
+  category: '공지' | '자유게시판';
   title: string;
   content: string;
   author_id: number;

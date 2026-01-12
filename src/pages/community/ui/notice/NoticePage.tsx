@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import { useCommunityPostsQuery } from '@/features/community/api/queries';
 import { BoardPage } from '@/features/community/ui/BoardPage';
-import PostCreateModal from '@/features/community/ui/WriteModal';
+import CommunityModal from '@/features/community/ui/CommunityModal';
 import { ROLE } from '@/features/pay/model/role';
 
 export default function NoticePage() {
@@ -31,7 +31,9 @@ export default function NoticePage() {
       icon={<Megaphone />}
       list={noticeList}
       canWrite={user.role === ROLE.MANAGER}
-      ModalComponent={(props) => <PostCreateModal {...props} category="공지" />}
+      ModalComponent={(props) => (
+        <CommunityModal {...props} mode="create" category="공지" onSubmit={async () => {}} />
+      )}
       columns={[
         {
           header: 'NO',
