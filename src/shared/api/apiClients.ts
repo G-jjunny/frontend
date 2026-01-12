@@ -20,8 +20,8 @@ export const apiClient = {
 
   post: <T>(config: AxiosRequestConfig) =>
     axiosInstance.post<T>(config.url!, config.data, config).then((response) => response.data),
-  put: <T>(config: AxiosRequestConfig) =>
-    axiosInstance.put<T>(config.url!, config).then((response) => response.data),
+  patch: <T>(config: AxiosRequestConfig) =>
+    axiosInstance.patch<T>(config.url!, config.data, config).then((response) => response.data),
   delete: <T>(config: AxiosRequestConfig) =>
     axiosInstance.delete<T>(config.url!, config).then((response) => response.data),
 } as const;

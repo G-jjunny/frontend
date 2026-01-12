@@ -1,50 +1,41 @@
-import { useState } from 'react';
-
-import { commentMockList } from '../../mock/commentMock';
+import {
+  useCreateCommentMutation,
+  useDeleteCommentMutation,
+  useUpdateCommentMutation,
+} from '../../api/queries';
 
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 
-import type { Comment } from '../../mock/commentMock';
+import type { CommentDTO } from '../../api/dto';
 
 interface CommentSectionProps {
   postId: number;
-  postType: 'notice' | 'freeboard';
   currentUserId: number;
+  comments: CommentDTO[];
+  postType: string;
 }
 
-export default function CommentSection({ postId, postType, currentUserId }: CommentSectionProps) {
-  const [comments, setComments] = useState<Comment[]>(
-    commentMockList.filter((c) => c.post_id === postId && c.post_type === postType),
-  );
+export default function CommentSection({ postId, currentUserId, comments }: CommentSectionProps) {
+  const createCommentMutation = useCreateCommentMutation(postId);
+  const updateCommentMutation = useUpdateCommentMutation(postId);
+  const deleteCommentMutation = useDeleteCommentMutation(postId);
 
   const handleCreate = (content: string) => {
-    const now = new Date().toISOString();
-
-    // 임의 데이터 생성
-    const newComment: Comment = {
-      id: Date.now(),
-      post_id: postId,
-      post_type: 'freeboard',
-      author_id: currentUserId,
-      author_name: '나',
-      author_position: '점장',
-      content,
-      created_at: now,
-      updated_at: now,
-    };
-
-    setComments((prev) => [...prev, newComment]);
+    createCommentMutation.mutate(content, {
+      onError: () => {
+        alert('댓글 작성에 실패했습니다.');
+      },
+    });
   };
 
   const handleUpdate = (id: number, content: string) => {
-    setComments((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, content, updated_at: new Date().toISOString() } : c)),
-    );
+    updateCommentMutation.mutate({ id, content });
   };
 
   const handleDelete = (id: number) => {
-    setComments((prev) => prev.filter((c) => c.id !== id));
+    if (!confirm('댓글을 삭제하시겠습니까?')) return;
+    deleteCommentMutation.mutate(id);
   };
 
   return (
@@ -58,7 +49,7 @@ export default function CommentSection({ postId, postType, currentUserId }: Comm
         onDelete={handleDelete}
       />
 
-      <CommentForm onSubmit={handleCreate} />
+      <CommentForm onSubmit={handleCreate} isLoading={createCommentMutation.isPending} />
     </div>
   );
 }

@@ -5,60 +5,37 @@ import { usePagenation } from '../hooks/usePagenation';
 import Pagenation from './Pagenation';
 import SearchInput from './SearchInput';
 
-export interface BaseRow {
-  id: number | string;
-}
-
-export interface Column<T extends BaseRow> {
-  header: string;
-  key: keyof T;
-  width?: string;
-  render?: (item: T, index: number) => React.ReactNode;
-}
-
-interface BoardProps<T extends BaseRow> {
-  title: string;
-  icon?: React.ReactNode;
-  list: T[];
-  canWrite?: boolean;
-  onSubmit?: (data: unknown) => void;
-  ModalComponent?: React.ComponentType<{
-    onClose: () => void;
-    onSubmit: (data: unknown) => void;
-  }>;
-  columns: Column<T>[];
-}
+import type { BaseRow, BoardProps } from '../model/boardType';
 
 export function BoardPage<T extends BaseRow>({
   title,
   icon,
   list,
   canWrite,
-  onSubmit,
+  category,
   ModalComponent,
   columns,
 }: BoardProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredList = useMemo(() => {
-    if (!searchTerm) return list;
-
-    const lowerSearch = searchTerm.toLowerCase();
-
-    return list.filter((item) =>
-      columns.some((col) => {
-        const value = item[col.key];
-
-        if (value === null || value === undefined) return false;
-
-        return String(value).toLowerCase().includes(lowerSearch);
-      }),
-    );
-  }, [searchTerm, list, columns]);
+  const filteredList = useMemo(
+    () =>
+      !searchTerm
+        ? list
+        : list.filter((item) =>
+            columns.some((col) => {
+              const value = item[col.key];
+              return (
+                value != null && String(value).toLowerCase().includes(searchTerm.toLowerCase())
+              );
+            }),
+          ),
+    [searchTerm, list, columns],
+  );
 
   const { currentPage, totalPages, currentItems, setCurrentPage } = usePagenation({
-    items: [...filteredList].reverse(),
+    items: filteredList,
     itemsPerPage: 10,
   });
 
@@ -73,7 +50,7 @@ export function BoardPage<T extends BaseRow>({
         <div className="flex items-center gap-3">
           <SearchInput onSearch={setSearchTerm} placeholder="검색어를 입력하세요" />
 
-          {canWrite && ModalComponent && onSubmit && (
+          {canWrite && (
             <button
               onClick={() => setIsOpen(true)}
               className="px-4 py-1 bg-mega text-white rounded"
@@ -82,14 +59,11 @@ export function BoardPage<T extends BaseRow>({
             </button>
           )}
 
-          {isOpen && ModalComponent && onSubmit && (
+          {isOpen && ModalComponent && (
             <ModalComponent
               onClose={() => setIsOpen(false)}
-              onSubmit={(data) => {
-                onSubmit(data);
-                setIsOpen(false);
-                alert('등록이 완료되었습니다!');
-              }}
+              category={category!}
+              onSubmit={(data) => console.log(data)}
             />
           )}
         </div>

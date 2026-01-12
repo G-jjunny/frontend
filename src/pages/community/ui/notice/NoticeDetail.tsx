@@ -1,28 +1,39 @@
 import { Megaphone } from 'lucide-react';
 import { useParams } from 'react-router';
 
-import { communityPostList } from '@/features/community/mock/communityMock';
+import { useCommunityPostDetailQuery } from '@/features/community/api/queries';
+import { mapBoardDetail } from '@/features/community/model/mapper';
 import BoardDetail from '@/features/community/ui/BoardDetail';
 import CommentSection from '@/features/community/ui/comment/CommentSection';
 
 export default function NoticeDetail() {
   const { id } = useParams<{ id: string }>();
+  const postId = Number(id);
 
-  if (!id) {
-    return <div>잘못된 접근입니다.</div>;
-  }
+  const { data, isLoading } = useCommunityPostDetailQuery(
+    // fetch 임의 방지
+    isNaN(postId) ? -1 : postId,
+  );
 
-  const noticeList = communityPostList.filter((post) => post.category === 'NOTICE');
+  if (!id || isNaN(postId)) return <div>잘못된 접근입니다.</div>;
+  if (isLoading) return <div>로딩 중...</div>;
+  if (!data) return <div>존재하지 않는 공지사항입니다.</div>;
+
+  const boardItem = mapBoardDetail(data);
 
   return (
     <BoardDetail
       title="공지사항"
       icon={<Megaphone />}
-      list={noticeList}
+      list={[boardItem]}
       notFoundMessage="존재하지 않는 공지사항입니다."
     >
-      {/* currentUserId - 임의 설정 */}
-      <CommentSection postId={Number(id)} postType="notice" currentUserId={1} />
+      <CommentSection
+        postId={data.id}
+        comments={data.comments}
+        postType="notice"
+        currentUserId={1}
+      />
     </BoardDetail>
   );
 }
