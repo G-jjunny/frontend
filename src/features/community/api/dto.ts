@@ -40,7 +40,27 @@ export interface CommunityPostDTO {
   comments: CommentDTO[];
 }
 
+// 게시글 DTO (2)
+export interface CommunityPostListResponseDTO {
+  items: CommunityPostDTO[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+  previous: number | null;
+  next: number | null;
+}
+
 // 댓글 생성 DTO
 export interface CreateCommentRequestDTO {
   content: string;
+}
+
+// 커뮤 GET params
+export interface GetCommunityPostsParams {
+  category?: string;
+  page?: number;
+  page_size?: number;
+  search?: string;
+  order?: 'latest' | 'oldest' | 'popular';
 }

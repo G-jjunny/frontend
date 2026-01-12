@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface EditPostModalProps {
   onClose: () => void;
@@ -18,7 +19,7 @@ export default function EditPostModal({
 
   const handleSubmit = () => {
     if (!title.trim() || !content.trim()) {
-      alert('제목과 내용을 입력하세요.');
+      toast.error('제목 및 내용을 모두 입력하세요.');
       return;
     }
     onSubmit({ title, content });

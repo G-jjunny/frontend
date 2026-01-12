@@ -3,9 +3,11 @@ import { apiClient } from '../../../shared/api/apiClients';
 import type {
   CommentDTO,
   CommunityPostDTO,
+  CommunityPostListResponseDTO,
   CreateCommentRequestDTO,
   CreatePostRequestDTO,
   CreatePostResponseDTO,
+  GetCommunityPostsParams,
 } from './dto';
 
 // 🔖 게시글
@@ -17,9 +19,10 @@ export const createPost = (data: CreatePostRequestDTO) =>
   });
 
 // GET
-export const getCommunityPosts = () =>
-  apiClient.get<CommunityPostDTO[]>({
+export const getCommunityPosts = (params?: GetCommunityPostsParams) =>
+  apiClient.get<CommunityPostListResponseDTO>({
     url: '/api/community/posts',
+    params,
   });
 
 // Detail GET

@@ -1,7 +1,5 @@
 import { useMemo, useState } from 'react';
 
-import { usePagenation } from '../hooks/usePagenation';
-
 import Pagenation from './Pagenation';
 import SearchInput from './SearchInput';
 
@@ -15,6 +13,7 @@ export function BoardPage<T extends BaseRow>({
   category,
   ModalComponent,
   columns,
+  pagination,
 }: BoardProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,11 +32,6 @@ export function BoardPage<T extends BaseRow>({
           ),
     [searchTerm, list, columns],
   );
-
-  const { currentPage, totalPages, currentItems, setCurrentPage } = usePagenation({
-    items: filteredList,
-    itemsPerPage: 10,
-  });
 
   return (
     <div className="flex flex-col gap-6">
@@ -84,7 +78,7 @@ export function BoardPage<T extends BaseRow>({
         </thead>
 
         <tbody>
-          {currentItems.map((item, index) => (
+          {filteredList.map((item, index) => (
             <tr key={item.id} className="border-b text-sm">
               {columns.map((col) => (
                 <td key={String(col.key)} className="py-4">
@@ -96,7 +90,13 @@ export function BoardPage<T extends BaseRow>({
         </tbody>
       </table>
 
-      <Pagenation totalPages={totalPages} currentPage={currentPage} onChangePage={setCurrentPage} />
+      {pagination && (
+        <Pagenation
+          totalPages={pagination.totalPages}
+          currentPage={pagination.currentPage}
+          onChangePage={pagination.onChangePage}
+        />
+      )}
     </div>
   );
 }

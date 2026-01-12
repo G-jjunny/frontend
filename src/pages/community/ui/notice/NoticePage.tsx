@@ -9,9 +9,17 @@ import { ROLE } from '@/features/pay/model/role';
 export default function NoticePage() {
   const user = { role: ROLE.MANAGER };
 
-  const { data, isLoading } = useCommunityPostsQuery();
+  const { data, isLoading } = useCommunityPostsQuery({
+    category: '공지',
+    page: 1,
+    page_size: 5,
+  });
 
-  const noticeList = (data ?? []).filter((post) => post.category === '공지');
+  const noticeList = data?.items ?? [];
+
+  const total = data?.total ?? 0;
+  const pages = data?.page ?? 1;
+  const pageSize = data?.page_size ?? 5;
 
   if (isLoading) {
     return <div>로딩 중...</div>;
@@ -28,7 +36,7 @@ export default function NoticePage() {
         {
           header: 'NO',
           key: 'id',
-          render: (_, idx) => noticeList.length - idx,
+          render: (_, idx) => total - (pages - 1) * pageSize - idx,
         },
         {
           header: '제목',

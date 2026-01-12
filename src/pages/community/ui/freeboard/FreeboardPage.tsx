@@ -1,19 +1,26 @@
 import { MessagesSquare } from 'lucide-react';
+import { useState } from 'react';
 import { Link } from 'react-router';
 
 import { useCommunityPostsQuery } from '@/features/community/api/queries';
-import { mapCommunityPostToBoardItem } from '@/features/community/model/mapper';
 import { BoardPage } from '@/features/community/ui/BoardPage';
 import PostCreateModal from '@/features/community/ui/WriteModal';
 
 export default function FreeboardPage() {
-  const { data, isLoading } = useCommunityPostsQuery();
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = useCommunityPostsQuery({
+    category: '자유게시판',
+    page,
+    page_size: 5,
+  });
+
+  const total = data?.total ?? 0;
+  const pages = data?.page ?? 1;
+  const pageSize = data?.page_size ?? 5;
 
   if (isLoading) return <div>로딩 중...</div>;
 
-  const freeBoardList = (data ?? [])
-    .filter((post) => post.category === '자유게시판')
-    .map(mapCommunityPostToBoardItem);
+  const freeBoardList = data?.items ?? [];
 
   return (
     <BoardPage
@@ -23,7 +30,11 @@ export default function FreeboardPage() {
       ModalComponent={(props) => <PostCreateModal {...props} category="자유게시판" />}
       canWrite={true}
       columns={[
-        { header: 'NO', key: 'id', render: (_, idx) => freeBoardList.length - idx },
+        {
+          header: 'NO',
+          key: 'id',
+          render: (_, idx) => total - (pages - 1) * pageSize - idx,
+        },
         {
           header: '제목',
           key: 'title',
@@ -33,13 +44,18 @@ export default function FreeboardPage() {
             </Link>
           ),
         },
-        { header: '작성자', key: 'author' },
+        { header: '작성자', key: 'author_name' },
         {
           header: '작성일자',
-          key: 'createdAt',
-          render: (item) => new Date(item.createdAt).toLocaleDateString(),
+          key: 'created_at',
+          render: (item) => new Date(item.created_at).toLocaleDateString(),
         },
       ]}
+      pagination={{
+        currentPage: data?.page ?? 1,
+        totalPages: data?.total_pages ?? 1,
+        onChangePage: setPage,
+      }}
     />
   );
 }

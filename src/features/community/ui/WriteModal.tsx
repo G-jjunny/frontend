@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { useCreatePostMutation } from '../api/queries';
 
@@ -15,7 +16,7 @@ export default function PostCreateModal({ onClose, category }: PostCreateModalPr
 
   const handleSubmit = async () => {
     if (!title.trim() || !content.trim()) {
-      alert('제목 및 내용을 모두 입력하세요.');
+      toast.error('제목 및 내용을 모두 입력하세요.');
       return;
     }
 
@@ -26,10 +27,10 @@ export default function PostCreateModal({ onClose, category }: PostCreateModalPr
         category,
       });
 
-      alert('등록이 완료되었습니다!');
+      toast.success('등록이 완료되었습니다!');
       onClose();
     } catch {
-      alert('등록에 실패했습니다.');
+      toast.error('등록이 실패되었습니다.');
     }
   };
 

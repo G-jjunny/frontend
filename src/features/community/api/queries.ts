@@ -11,7 +11,7 @@ import {
   deleteComment,
 } from './service';
 
-import type { CreatePostRequestDTO } from './dto';
+import type { GetCommunityPostsParams, CreatePostRequestDTO, CommunityPostDTO } from './dto';
 
 // 🔖 게시글
 // POST
@@ -27,12 +27,12 @@ export function useCreatePostMutation() {
 }
 
 // LIST
-export function useCommunityPostsQuery() {
+export const useCommunityPostsQuery = (params: GetCommunityPostsParams) => {
   return useQuery({
-    queryKey: ['communityPosts'],
-    queryFn: getCommunityPosts,
+    queryKey: ['communityPosts', params],
+    queryFn: () => getCommunityPosts(params),
   });
-}
+};
 
 // DETAIL
 export function useCommunityPostDetailQuery(id: number) {
@@ -47,11 +47,17 @@ export function useCommunityPostDetailQuery(id: number) {
 export function useUpdatePostMutation() {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: Partial<CreatePostRequestDTO> }) =>
-      updatePost(id, data),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['communityPosts'] });
+  return useMutation<CommunityPostDTO, Error, { id: number; data: Partial<CreatePostRequestDTO> }>({
+    mutationFn: ({ id, data }) => updatePost(id, data),
+
+    onSuccess: (data, variables) => {
+      void queryClient.invalidateQueries({
+        queryKey: ['communityPost', variables.id],
+      });
+
+      void queryClient.invalidateQueries({
+        queryKey: ['communityPosts'],
+      });
     },
   });
 }

@@ -1,3 +1,5 @@
+import { toast } from 'sonner';
+
 import {
   useCreateCommentMutation,
   useDeleteCommentMutation,
@@ -24,7 +26,7 @@ export default function CommentSection({ postId, currentUserId, comments }: Comm
   const handleCreate = (content: string) => {
     createCommentMutation.mutate(content, {
       onError: () => {
-        alert('댓글 작성에 실패했습니다.');
+        toast.error('댓글 작성에 실패했습니다.');
       },
     });
   };
