@@ -28,17 +28,17 @@ const LoginForm = () => {
 
   const { mutate } = useMutation({
     ...authQueries.login,
-    onSuccess: async () => {
+    onSuccess: () => {
       // 로그인 성공 -> 페이지 이동
-      const user = await userService.me(); // 유저 정보 1회 요청
+      // const user = await userService.me(); // 유저 정보 1회 요청
       toast.success('로그인에 성공했습니다');
 
       // 역할에 따른 리다이렉트
-      if (isSystemAccount(user.position)) {
-        void navigate(ROUTES.WORK_STATUS);
-      } else {
-        void navigate(ROUTES.ROOT);
-      }
+      // if (isSystemAccount(user.position)) {
+      void navigate(ROUTES.WORK_STATUS);
+      // } else {
+      //   void navigate(ROUTES.ROOT);
+      // }
     },
     onError: (error) => {
       if (isApiError(error)) {
@@ -90,7 +90,13 @@ const LoginForm = () => {
         {/* TODOS : RHFInput shared 레이어로 변경 */}
         <RHFInput form={form} name="username" placeholder="ID" />
 
-        <RHFInput type="password" form={form} name="password" placeholder="Password" />
+        <RHFInput
+          type="password"
+          form={form}
+          name="password"
+          placeholder="Password"
+          className="font-sans"
+        />
 
         <Button type="submit" className="mt-2 w-full bg-mega">
           로그인
