@@ -28,17 +28,17 @@ const LoginForm = () => {
 
   const { mutate } = useMutation({
     ...authQueries.login,
-    onSuccess: () => {
+    onSuccess: async () => {
       // 로그인 성공 -> 페이지 이동
-      // const user = await userService.me(); // 유저 정보 1회 요청
+      const user = await userService.me(); // 유저 정보 1회 요청
       toast.success('로그인에 성공했습니다');
 
       // 역할에 따른 리다이렉트
-      // if (isSystemAccount(user.position)) {
-      void navigate(ROUTES.WORK_STATUS);
-      // } else {
-      //   void navigate(ROUTES.ROOT);
-      // }
+      if (isSystemAccount(user.position)) {
+        void navigate(ROUTES.WORK_STATUS);
+      } else {
+        void navigate(ROUTES.ROOT);
+      }
     },
     onError: (error) => {
       if (isApiError(error)) {
