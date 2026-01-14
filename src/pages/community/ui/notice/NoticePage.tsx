@@ -1,4 +1,5 @@
 import { Megaphone } from 'lucide-react';
+import { useState } from 'react';
 import { Link } from 'react-router';
 
 import { useCommunityPostsQuery } from '@/features/community/api/queries';
@@ -9,9 +10,11 @@ import { ROLE } from '@/features/pay/model/role';
 export default function NoticePage() {
   const user = { role: ROLE.MANAGER };
 
+  const [page, setPage] = useState(1);
+
   const { data, isLoading } = useCommunityPostsQuery({
     category: '공지',
-    page: 1,
+    page,
     page_size: 5,
   });
 
@@ -31,6 +34,11 @@ export default function NoticePage() {
       icon={<Megaphone />}
       list={noticeList}
       canWrite={user.role === ROLE.MANAGER}
+      pagination={{
+        currentPage: page,
+        totalPages: data?.total_pages ?? 1,
+        onChangePage: setPage,
+      }}
       ModalComponent={(props) => (
         <CommunityModal {...props} mode="create" category="공지" onSubmit={async () => {}} />
       )}

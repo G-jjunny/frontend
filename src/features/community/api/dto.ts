@@ -51,6 +51,17 @@ export interface CommunityPostListResponseDTO {
   next: number | null;
 }
 
+// 댓글 조회 DTO
+export interface CommentsResponseDTO {
+  items: CommentDTO[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+  previous: number | null;
+  next: number | null;
+}
+
 // 댓글 생성 DTO
 export interface CreateCommentRequestDTO {
   content: string;

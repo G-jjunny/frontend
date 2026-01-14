@@ -6,12 +6,18 @@ import {
   getCommunityPostById,
   updatePost,
   deletePost,
+  getComments,
   createComment,
   updateComment,
   deleteComment,
 } from './service';
 
-import type { GetCommunityPostsParams, CreatePostRequestDTO, CommunityPostDTO } from './dto';
+import type {
+  GetCommunityPostsParams,
+  CreatePostRequestDTO,
+  CommunityPostDTO,
+  CommentsResponseDTO,
+} from './dto';
 
 // 🔖 게시글
 // POST
@@ -75,21 +81,27 @@ export function useDeletePostMutation() {
 }
 
 // 🔖 댓글
+// GET
+export const useCommentsQuery = (postId: number, page: number) =>
+  useQuery<CommentsResponseDTO>({
+    queryKey: ['comments', postId, page],
+    queryFn: () => getComments(postId, page),
+    placeholderData: (prev) => prev,
+  });
+
 // POST
-export function useCreateCommentMutation(postId: number) {
+export const useCreateCommentMutation = (postId: number) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (content: string) => createComment(postId, { content }),
-
     onSuccess: () => {
-      // 🔥 핵심
       void queryClient.invalidateQueries({
-        queryKey: ['communityPost', postId],
+        queryKey: ['comments', postId],
       });
     },
   });
-}
+};
 
 // PATCH
 export function useUpdateCommentMutation(postId: number) {
@@ -100,7 +112,7 @@ export function useUpdateCommentMutation(postId: number) {
 
     onSuccess: () => {
       void queryClient.invalidateQueries({
-        queryKey: ['communityPost', postId],
+        queryKey: ['comments', postId],
       });
     },
   });
@@ -115,7 +127,7 @@ export function useDeleteCommentMutation(postId: number) {
 
     onSuccess: () => {
       void queryClient.invalidateQueries({
-        queryKey: ['communityPost', postId],
+        queryKey: ['comments', postId],
       });
     },
   });

@@ -2,6 +2,7 @@ import { apiClient } from '../../../shared/api/apiClients';
 
 import type {
   CommentDTO,
+  CommentsResponseDTO,
   CommunityPostDTO,
   CommunityPostListResponseDTO,
   CreateCommentRequestDTO,
@@ -45,6 +46,13 @@ export const deletePost = (id: number) =>
   });
 
 // 🔖 댓글
+// GET
+export const getComments = (postId: number, page = 1, pageSize = 10) =>
+  apiClient.get<CommentsResponseDTO>({
+    url: `/api/community/posts/${postId}/comments`,
+    params: { page, page_size: pageSize },
+  });
+
 // POST
 export const createComment = (postId: number, data: CreateCommentRequestDTO) =>
   apiClient.post<CommentDTO>({

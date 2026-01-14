@@ -1,30 +1,42 @@
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 import {
+  useCommentsQuery,
   useCreateCommentMutation,
   useDeleteCommentMutation,
   useUpdateCommentMutation,
 } from '../../api/queries';
+import Pagenation from '../Pagenation';
 
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 
-import type { CommentDTO } from '../../api/dto';
-
 interface CommentSectionProps {
   postId: number;
   currentUserId: number;
-  comments: CommentDTO[];
-  postType: string;
 }
 
-export default function CommentSection({ postId, currentUserId, comments }: CommentSectionProps) {
+export default function CommentSection({ postId, currentUserId }: CommentSectionProps) {
   const createCommentMutation = useCreateCommentMutation(postId);
   const updateCommentMutation = useUpdateCommentMutation(postId);
   const deleteCommentMutation = useDeleteCommentMutation(postId);
 
+  const [page, setPage] = useState(1);
+
+  const { data } = useCommentsQuery(postId, page);
+
+  const comments = data?.items ?? [];
+
+  const totalPages = data?.total_pages ?? 1;
+
+  console.log(data);
+
   const handleCreate = (content: string) => {
     createCommentMutation.mutate(content, {
+      onSuccess: () => {
+        setPage(1);
+      },
       onError: () => {
         toast.error('댓글 작성에 실패했습니다.');
       },
@@ -32,12 +44,30 @@ export default function CommentSection({ postId, currentUserId, comments }: Comm
   };
 
   const handleUpdate = (id: number, content: string) => {
-    updateCommentMutation.mutate({ id, content });
+    updateCommentMutation.mutate(
+      { id, content },
+      {
+        onSuccess: () => {
+          toast.success('댓글이 수정되었습니다.');
+        },
+        onError: () => {
+          toast.error('댓글 수정을 실패하였습니다.');
+        },
+      },
+    );
   };
 
   const handleDelete = (id: number) => {
     if (!confirm('댓글을 삭제하시겠습니까?')) return;
-    deleteCommentMutation.mutate(id);
+    deleteCommentMutation.mutate(id, {
+      onSuccess: () => {
+        setPage((prev) => Math.max(1, prev - 1));
+        toast.success('댓글이 삭제되었습니다.');
+      },
+      onError: () => {
+        toast.error('댓글 삭제를 실패하였습니다.');
+      },
+    });
   };
 
   return (
@@ -50,6 +80,8 @@ export default function CommentSection({ postId, currentUserId, comments }: Comm
         onUpdate={handleUpdate}
         onDelete={handleDelete}
       />
+
+      <Pagenation totalPages={totalPages} currentPage={page} onChangePage={setPage} />
 
       <CommentForm onSubmit={handleCreate} isLoading={createCommentMutation.isPending} />
     </div>
