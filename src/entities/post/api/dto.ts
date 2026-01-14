@@ -1,4 +1,14 @@
 export interface PostResponseDTO {
+  items: PostDTO[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+  previous: number;
+  next: number;
+}
+
+export interface PostDTO {
   id: number;
   category: string;
   title: string;
@@ -6,10 +16,9 @@ export interface PostResponseDTO {
   author_id: number;
   author_name: string;
   author_position: string;
-  system_generated: boolean;
   created_at: string;
   updated_at: string;
-  comments: Comment[];
+  comments_count: number;
 }
 
 export interface Comment {

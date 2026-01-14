@@ -9,8 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui
 import { ROUTES } from '@/shared/constants/routes';
 
 const CommunityCard = () => {
-  const { data: posts = [], isLoading, isError } = useQuery(postQueries.allPosts());
-  console.log('posts', posts);
+  const { data: posts = { items: [] } } = useQuery(postQueries.allPosts());
 
   return (
     <Card>
@@ -25,8 +24,8 @@ const CommunityCard = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {posts.length > 0
-          ? posts.map((post) => <ComunityList key={post.id} post={post} />)
+        {posts.items.length > 0
+          ? posts.items.map((post) => <ComunityList key={post.id} post={post} />)
           : '작성된 게시물이 없습니다.'}
       </CardContent>
     </Card>

@@ -1,8 +1,8 @@
-import type { PostResponseDTO } from '@/entities/post/api/dto';
+import type { PostDTO } from '@/entities/post/api/dto';
 
 import { formatDate } from '@/shared/lib/date';
 interface ComunityListProps {
-  post: PostResponseDTO;
+  post: PostDTO;
 }
 
 const ComunityList = ({ post }: ComunityListProps) => {
