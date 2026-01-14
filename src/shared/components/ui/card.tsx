@@ -1,25 +1,45 @@
+import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 import { cn } from '@/shared//lib/utils';
 
-type CardProps = React.ComponentProps<'div'> & {
-  // default = 기본 white 배경 색상 카드 , blueMain = 연한파란색 배경 색상 카드 , blueSide = 연한 파란색 배경 사이드 카드
-  variant?: 'default' | 'blueMain' | 'blueSide';
-};
+const cardVariants = cva('text-card-foreground flex flex-col gap-6 rounded-xl border py-6 w-full', {
+  variants: {
+    variant: {
+      default: 'bg-card',
+      blueMain: 'bg-mega-light-blue',
+      blueSide: 'max-w-1/6 bg-mega-light-blue',
+      purpleMain: 'bg-mega-light-purple text-white',
+    },
+    shadow: {
+      default: 'shadow-sm',
+      none: 'shadow-none',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+    shadow: 'default',
+  },
+});
 
-function Card({ className, variant = 'default', ...props }: CardProps) {
-  return (
-    <div
-      data-slot="card"
-      className={cn(
-        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl py-6 shadow-sm w-full',
-        variant === 'blueSide' && 'max-w-1/6 bg-mega-light-blue',
-        variant === 'blueMain' && 'bg-mega-light-blue',
-        className,
-      )}
-      {...props}
-    />
-  );
+type CardProps = React.ComponentProps<'div'> & VariantProps<typeof cardVariants>;
+
+/** Card 전체 UI
+ * @param variant 카드 테마
+ * @param shadow 카드 그림자 옵션
+ *
+ * variant 옵션:
+ * - `default`  : 기본 카드 (흰색 배경 + border + shadow)
+ * - `blueMain` : 메인 영역 강조 카드 (연한 파란 배경)
+ * - `blueSide` : 사이드 영역 카드 (연한 파란 배경 + 좁은 폭)
+ * - `purpleMain` : 보라색 테마 카드 (연한 보라 배경)
+ *
+ * shadow 옵션:
+ * - `default` : 기본 그림자 효과
+ * - `none`    : 그림자 없음
+ */
+function Card({ className, variant, ...props }: CardProps) {
+  return <div data-slot="card" className={cn(cardVariants({ variant }), className)} {...props} />;
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<'div'>) {
