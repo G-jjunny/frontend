@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { cn } from '@/shared//lib/utils';
 
-const cardVariants = cva('text-card-foreground flex flex-col gap-6 rounded-xl border py-6 w-full', {
+const cardVariants = cva('text-card-foreground flex flex-col gap-6 rounded-xl py-6 w-full', {
   variants: {
     variant: {
       default: 'bg-card',
