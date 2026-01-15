@@ -8,7 +8,6 @@ export const userService = {
     const response = await apiClient.get<MeResponseDTO>({
       url: '/api/auth/me',
     });
-    console.log('me response:', response);
 
     const { setUser } = useAuthStore.getState();
     setUser(response);

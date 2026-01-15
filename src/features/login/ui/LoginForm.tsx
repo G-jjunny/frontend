@@ -90,7 +90,13 @@ const LoginForm = () => {
         {/* TODOS : RHFInput shared 레이어로 변경 */}
         <RHFInput form={form} name="username" placeholder="ID" />
 
-        <RHFInput type="password" form={form} name="password" placeholder="Password" />
+        <RHFInput
+          type="password"
+          form={form}
+          name="password"
+          placeholder="Password"
+          className="font-sans"
+        />
 
         <Button type="submit" className="mt-2 w-full bg-mega">
           로그인
