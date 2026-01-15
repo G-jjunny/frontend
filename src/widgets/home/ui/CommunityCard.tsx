@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { SquarePlus } from 'lucide-react';
+import { MessageSquare, SquarePlus } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { postQueries } from '@/entities/post/api/queries';
 import ComunityList from '@/features/home/ui/CommunityList';
 import { Button } from '@/shared/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
+import { IconAvatar } from '@/shared/components/ui/iconAvatar';
 import { ROUTES } from '@/shared/constants/routes';
 
 const CommunityCard = () => {
@@ -15,12 +16,19 @@ const CommunityCard = () => {
     <Card>
       <CardHeader>
         <CardTitle>
-          커뮤니티
-          <Link to={ROUTES.COMMUNITY}>
-            <Button variant="ghost" size="icon">
-              <SquarePlus />
-            </Button>
-          </Link>
+          <div className="flex items-center gap-3">
+            <IconAvatar variant="default" size="md">
+              <MessageSquare />
+            </IconAvatar>
+            커뮤니티
+          </div>
+          <CardAction>
+            <Link to={ROUTES.COMMUNITY}>
+              <Button variant="ghost" size="icon">
+                <SquarePlus />
+              </Button>
+            </Link>
+          </CardAction>
         </CardTitle>
       </CardHeader>
       <CardContent>

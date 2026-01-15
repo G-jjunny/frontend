@@ -1,9 +1,12 @@
 import { ScheduleList, UserCalendar, UserProfile } from '@/features/home';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import PayOverview from '@/features/home/ui/PayOverview';
 =======
 import { Card } from '@/shared/components/ui/card';
 >>>>>>> 30c514f (feat: card  컴포넌트 variants 추가 및 리팩토링)
+=======
+>>>>>>> bc3dff3 (feat: icon avatar 컴포넌트 추가)
 import PageLogo from '@/shared/components/ui/PageLogo';
 import { CommunityCard } from '@/widgets/home';
 import ContentsCard from '@/widgets/ui/ContentsCard';
