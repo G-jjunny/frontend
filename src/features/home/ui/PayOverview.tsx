@@ -7,11 +7,29 @@ import { normalizePayOverview } from '@/entities/pay/model/payOverview';
 const PayOverview = () => {
   const year = new Date().getFullYear();
   const month = new Date().getMonth() + 1;
-  const { data } = useQuery({
+  const { data = normalizePayOverview() } = useQuery({
     ...payQueries.payOverview(year, month),
     select: normalizePayOverview,
   });
   const payDate = `${year}-${month}-10`;
+
+  const stats = [
+    {
+      icon: <Calendar />,
+      label: '근무일수',
+      value: `${data.total_work_days}일`,
+    },
+    {
+      icon: <ChartLine />,
+      label: '총 근무시간',
+      value: `${data.total_work_hours}시간`,
+    },
+    {
+      icon: <History />,
+      label: '마지막 근무일',
+      value: `${data.total_work_days}일`,
+    },
+  ];
 
   return (
     <div className=" flex flex-col gap-3">
@@ -31,33 +49,15 @@ const PayOverview = () => {
         <h4>{data?.total_deduction.toLocaleString()}</h4>
       </div>
       <div className=" flex justify-between">
-        <div className=" flex flex-col gap-6 justify-center items-center">
-          <div className=" flex gap-2">
-            <Calendar />
-            <p className=" text-xs">근무일수</p>
+        {stats.map(({ icon, label, value }) => (
+          <div key={label} className="flex flex-col gap-6 items-center">
+            <div className="flex gap-2 items-center">
+              {icon}
+              <p className="text-xs">{label}</p>
+            </div>
+            <p>{value}</p>
           </div>
-          <p>
-            {data?.total_work_days} <span>일</span>
-          </p>
-        </div>
-        <div className=" flex flex-col gap-6 justify-center items-center">
-          <div className=" flex gap-2">
-            <ChartLine />
-            <p className=" text-xs">총 근무시간</p>
-          </div>
-          <p>
-            {data?.total_work_hours} <span>시간</span>
-          </p>
-        </div>
-        <div className=" flex flex-col gap-6 justify-center items-center">
-          <div className=" flex gap-2">
-            <History />
-            <p className=" text-xs">마지막 근무일</p>
-          </div>
-          <p>
-            {data?.total_work_days} <span>일</span>
-          </p>
-        </div>
+        ))}
       </div>
     </div>
   );
