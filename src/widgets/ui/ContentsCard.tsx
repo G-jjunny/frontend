@@ -22,21 +22,8 @@ const ContentsCard = ({ profile, title, description, children, className }: Cont
       <CardHeader>
         <CardTitle className=" flex gap-3 items-center">{profile ? profile : title}</CardTitle>
         <CardDescription>{description}</CardDescription>
-        {/* TODOS : 여기 optional하게 수정 */}
-        {/* <CardAction>
-          <Button variant="link">Sign Up</Button>
-        </CardAction> */}
       </CardHeader>
       <CardContent>{children}</CardContent>
-      {/* TODOS : 여기더..... optional하게 수정 */}
-      {/* <CardFooter className="flex-col gap-2">
-        <Button type="submit" className="w-full">
-          Login
-        </Button>
-        <Button variant="outline" className="w-full">
-          Login with Google
-        </Button>
-      </CardFooter> */}
     </Card>
   );
 };

@@ -1,6 +1,7 @@
 import { ScheduleList, UserCalendar, UserProfile } from '@/features/home';
 import PayOverview from '@/features/home/ui/PayOverview';
 import PageLogo from '@/shared/components/ui/PageLogo';
+import { CommunityCard } from '@/widgets/home';
 import ContentsCard from '@/widgets/ui/ContentsCard';
 
 const HomePage = () => {
@@ -22,7 +23,8 @@ const HomePage = () => {
           <ContentsCard title="이번달 급여" className=" w-full bg-mega-secondary text-white ">
             <PayOverview />
           </ContentsCard>
-          <ContentsCard title="커뮤니티" className=" w-full"></ContentsCard>
+
+          <CommunityCard />
         </div>
       </div>
     </div>
