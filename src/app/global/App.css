@@ -42,12 +42,22 @@
 
   /* custom color */
 
+  /* 배경 관련 */
   --color-mega: #351f66;
   --color-mega-secondary: #5b31a5;
+  --color-green: #44bc62;
+  --color-light-green: #dcfce7;
+  --color-orange: #ff8d28;
+  --color-accent-blue: #6155f5;
+  --color-accent-red: #ff383c;
+  --color-mega-white-gray: #efeeee;
+
   --color-mega-blue: #59bec9;
   --color-mega-light-blue: #f5fafe;
   --color-mega-header-blue: #eaf3f4;
+  --color-meag-sky-blue: #dbeafe;
   --color-mega-gray: #53565a;
+  --color-mega-gray-mid: #7c7979;
   --color-mega-gray-light: #d9d9d9;
   --color-red-light: #ff9696;
 }
