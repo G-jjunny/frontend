@@ -14,7 +14,8 @@ interface AuthRouteProps extends PropsWithChildren {
 }
 
 export const AuthRoute = ({ isPublic, requireAdmin, allowSystem, children }: AuthRouteProps) => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  // const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isAuthenticated = true; // TODO: 임시로 true 설정, 나중에 원복
   const user = useAuthStore((state) => state.user);
 
   // 로그인 안 한 경우

@@ -20,8 +20,8 @@ import TestPage from '@/pages/home/ui/TestPage';
 import { LoginPage } from '@/pages/login';
 import PayPage from '@/pages/payroll/PayPage';
 import { WorkStatusPage } from '@/pages/work-status';
-import { Layout } from '@/shared/layouts/Layout';
-import PublicLayout from '@/shared/layouts/PublicLayout';
+import { Layout } from '@/app/layouts/Layout';
+import PublicLayout from '@/app/layouts/PublicLayout';
 
 export const router = createBrowserRouter([
   {
