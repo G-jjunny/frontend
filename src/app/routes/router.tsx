@@ -16,6 +16,7 @@ import {
   ShiftDetailPage,
 } from '@/pages/community';
 import { HomePage } from '@/pages/home';
+import TestPage from '@/pages/home/ui/TestPage';
 import { LoginPage } from '@/pages/login';
 import PayPage from '@/pages/payroll/PayPage';
 import { WorkStatusPage } from '@/pages/work-status';
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: ROUTES.LOGIN,
         element: <LoginPage />,
+      },
+      {
+        path: '/test',
+        element: <TestPage />,
       },
     ],
   },

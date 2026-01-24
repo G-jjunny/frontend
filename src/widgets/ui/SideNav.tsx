@@ -1,5 +1,13 @@
+import { Menu } from 'lucide-react';
+
 const SideNav = () => {
-  return <div></div>;
+  return (
+    <div className=" flex flex-col gap-3">
+      <div>
+        <Menu />
+      </div>
+    </div>
+  );
 };
 
 export default SideNav;
