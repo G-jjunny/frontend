@@ -1,6 +1,6 @@
 export const USER_ROLES = {
   CREW: '크루',
-  ADMIN: '관리자',
+  ADMIN: '점장',
   SYSTEM: '시스템',
 } as const;
 

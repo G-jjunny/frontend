@@ -1,7 +1,8 @@
-import { LayoutGrid, DollarSign, MessageSquare } from 'lucide-react';
+import { LayoutGrid, DollarSign, MessageSquare, ShieldUser } from 'lucide-react';
 
 import type { LucideIcon } from 'lucide-react';
 
+import { USER_ROLES, type UserRole } from '@/entities/user/model/role';
 import { ROUTES } from '@/shared/constants/routes';
 
 export type NavItemConfig = {
@@ -9,8 +10,8 @@ export type NavItemConfig = {
   label: string;
   path: string;
   icon: LucideIcon;
-  authRequired?: boolean;
   exact?: boolean;
+  requiredRoles?: UserRole[];
 };
 
 export const NAV_ITEMS: NavItemConfig[] = [
@@ -19,28 +20,35 @@ export const NAV_ITEMS: NavItemConfig[] = [
     label: '대시보드',
     path: ROUTES.ROOT,
     icon: LayoutGrid,
-    authRequired: true,
     exact: true,
+    requiredRoles: [USER_ROLES.ADMIN, USER_ROLES.CREW],
   },
   {
     key: 'pay',
     label: '급여',
     path: ROUTES.PAY,
     icon: DollarSign,
-    authRequired: true,
+    requiredRoles: [USER_ROLES.ADMIN, USER_ROLES.CREW],
   },
   //   {
   //     key: 'calendar',
   //     label: '스케줄',
   //     path: '/calendar',
   //     icon: Calendar,
-  //     authRequired: true,
+  //     requiredRoles: [USER_ROLES.ADMIN, USER_ROLES.CREW],
   //   },
   {
     key: 'community',
     label: '커뮤니티',
     path: ROUTES.COMMUNITY,
     icon: MessageSquare,
-    authRequired: false,
+    requiredRoles: [USER_ROLES.ADMIN, USER_ROLES.CREW],
+  },
+  {
+    key: 'admin',
+    label: '관리자',
+    path: ROUTES.ADMIN,
+    icon: ShieldUser,
+    requiredRoles: [USER_ROLES.ADMIN],
   },
 ];
