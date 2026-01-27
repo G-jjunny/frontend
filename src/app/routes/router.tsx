@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate } from 'react-router';
 import { ROUTES } from '../../shared/constants/routes';
 import { Layout } from '../layouts/Layout';
 import PublicLayout from '../layouts/PublicLayout';
+import SystemLayOut from '../layouts/SystemLayOut';
 
 import { AuthRoute } from './AuthRoute';
 
@@ -43,7 +44,7 @@ export const router = createBrowserRouter([
     path: ROUTES.WORK_STATUS,
     element: (
       <AuthRoute allowSystem>
-        <Layout />
+        <SystemLayOut />
       </AuthRoute>
     ),
     children: [
@@ -108,10 +109,6 @@ export const router = createBrowserRouter([
             ],
           },
         ],
-      },
-      {
-        path: ROUTES.WORK_STATUS,
-        element: <WorkStatusPage />,
       },
     ],
   },
