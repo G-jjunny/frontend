@@ -7,4 +7,5 @@ export const ROUTES = {
   LOGIN: '/login',
   COMMUNITY: '/community',
   WORK_STATUS: '/work-status',
+  ADMIN: '/admin',
 } as const;

@@ -1,6 +1,8 @@
 import { createBrowserRouter, Navigate } from 'react-router';
 
 import { ROUTES } from '../../shared/constants/routes';
+import { Layout } from '../layouts/Layout';
+import PublicLayout from '../layouts/PublicLayout';
 
 import { AuthRoute } from './AuthRoute';
 
@@ -19,8 +21,6 @@ import { HomePage } from '@/pages/home';
 import { LoginPage } from '@/pages/login';
 import PayPage from '@/pages/payroll/PayPage';
 import { WorkStatusPage } from '@/pages/work-status';
-import { Layout } from '@/shared/layouts/Layout';
-import PublicLayout from '@/shared/layouts/PublicLayout';
 
 export const router = createBrowserRouter([
   {

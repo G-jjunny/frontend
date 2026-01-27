@@ -4,7 +4,7 @@ import { ROUTES } from '../../shared/constants/routes';
 
 import type { PropsWithChildren } from 'react';
 
-import { isSystemAccount } from '@/entities/user/model/role';
+import { isSystemAccount, USER_ROLES } from '@/entities/user/model/role';
 import { useAuthStore } from '@/shared/model/authStore';
 
 interface AuthRouteProps extends PropsWithChildren {
@@ -42,7 +42,7 @@ export const AuthRoute = ({ isPublic, requireAdmin, allowSystem, children }: Aut
     }
 
     // 관리자 전용 페이지에 일반 유저 접근 시
-    if (requireAdmin && user.position !== '관리자') {
+    if (requireAdmin && user.position !== USER_ROLES.ADMIN) {
       return <Navigate to={ROUTES.ROOT} replace />;
     }
   }
