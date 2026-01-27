@@ -67,26 +67,42 @@ const WorkStatusForm = () => {
       <CardContent className="flex flex-col gap-4">
         <Form {...form}>
           <form id="work-status-form" className=" flex flex-col gap-2">
-            <RHFInput form={form} name="username" placeholder="ID" disabled={isPending} />
-            <RHFInput
-              form={form}
-              name="password"
-              placeholder="PASSWORD"
-              type="password"
-              disabled={isPending}
-            />
+            <div className=" flex gap-2">
+              <RHFInput
+                form={form}
+                name="username"
+                placeholder="ID"
+                disabled={isPending}
+                label="아이디"
+              />
+              <RHFInput
+                form={form}
+                name="password"
+                placeholder="PASSWORD"
+                type="password"
+                disabled={isPending}
+                label="패스워드"
+              />
+            </div>
           </form>
         </Form>
-        {WORK_STATUS_ACTIONS.map(({ action, label, buttonVariant }) => (
-          <Button
-            key={action}
-            onClick={(e) => void handleAction(action)(e)}
-            disabled={isPending}
-            variant={buttonVariant}
-          >
-            {isPending && currentAction === action ? '처리 중...' : label}
-          </Button>
-        ))}
+        <div className=" flex gap-3">
+          {WORK_STATUS_ACTIONS.map(({ action, label, buttonVariant, icon: Icon }) => (
+            <Button
+              key={action}
+              onClick={(e) => void handleAction(action)(e)}
+              disabled={isPending}
+              variant={buttonVariant}
+              size="transparent"
+              className="flex-1"
+            >
+              <div className="flex flex-col justify-center items-center gap-1">
+                <Icon />
+                {isPending && currentAction === action ? '처리 중...' : label}
+              </div>
+            </Button>
+          ))}
+        </div>
       </CardContent>
     </Card>
   );
