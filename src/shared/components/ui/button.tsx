@@ -31,6 +31,7 @@ const buttonVariants = cva(
         icon: 'size-9',
         'icon-sm': 'size-8',
         'icon-lg': 'size-12 [&_svg]:size-5',
+        transparent: 'py-2 px-4',
       },
       rounded: {
         default: 'rounded-md',
