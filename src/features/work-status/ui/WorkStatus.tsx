@@ -1,4 +1,4 @@
-import { STATUS_TYPES } from '../model/status';
+// import { STATUS_TYPES } from '../model/status';
 
 import WorkStatusForm from './WorkStatusForm';
 
@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui
 const WorkStatus = () => {
   return (
     <div className="flex w-full max-w-sm flex-col gap-6">
-      <Tabs defaultValue={STATUS_TYPES.ATTENDANCE}>
+      {/* <Tabs defaultValue={STATUS_TYPES.ATTENDANCE}>
         <TabsList>
           <TabsTrigger value={STATUS_TYPES.ATTENDANCE}>출퇴근</TabsTrigger>
           <TabsTrigger value={STATUS_TYPES.REST}>휴식 및 복귀</TabsTrigger>
@@ -18,7 +18,8 @@ const WorkStatus = () => {
         <TabsContent value={STATUS_TYPES.REST}>
           <WorkStatusForm type={STATUS_TYPES.REST} />
         </TabsContent>
-      </Tabs>
+      </Tabs> */}
+      <WorkStatusForm />
     </div>
   );
 };
