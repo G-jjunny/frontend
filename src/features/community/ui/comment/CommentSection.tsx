@@ -30,8 +30,6 @@ export default function CommentSection({ postId, currentUserId }: CommentSection
 
   const totalPages = data?.total_pages ?? 1;
 
-  console.log(data);
-
   const handleCreate = (content: string) => {
     createCommentMutation.mutate(content, {
       onSuccess: () => {

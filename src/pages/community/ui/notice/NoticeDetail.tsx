@@ -30,8 +30,6 @@ export default function NoticeDetail() {
     >
       <CommentSection
         postId={data.id}
-        comments={data.comments}
-        postType="notice"
         currentUserId={1}
       />
     </BoardDetail>

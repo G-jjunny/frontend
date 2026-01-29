@@ -28,8 +28,6 @@ export default function FreeBoardDetail() {
     >
       <CommentSection
         postId={Number(id)}
-        comments={data.comments}
-        postType="freeboard"
         currentUserId={1}
       />
     </BoardDetail>

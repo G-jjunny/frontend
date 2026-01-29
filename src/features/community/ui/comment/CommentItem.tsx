@@ -37,7 +37,9 @@ export default function CommentItem({
     <li className="border rounded-md p-3">
       <div className="flex justify-between">
         <div className="text-sm font-bold">{comment.author_name}</div>
-        <div className="text-[12px] text-gray-500">{formattedDate}</div>
+        <div className="text-[12px] text-gray-500">
+          {formattedDate}
+          {comment.updated_at !== comment.created_at ? ' · 수정됨' : ''}</div>
       </div>
 
       {!isEditing ? (
