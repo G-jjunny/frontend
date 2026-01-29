@@ -26,10 +26,7 @@ export default function FreeBoardDetail() {
       list={[boardItem]}
       notFoundMessage="존재하지 않는 자유게시글입니다."
     >
-      <CommentSection
-        postId={Number(id)}
-        currentUserId={1}
-      />
+      <CommentSection postId={Number(id)} currentUserId={1} />
     </BoardDetail>
   );
 }

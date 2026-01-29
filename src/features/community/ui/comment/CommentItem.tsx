@@ -39,7 +39,8 @@ export default function CommentItem({
         <div className="text-sm font-bold">{comment.author_name}</div>
         <div className="text-[12px] text-gray-500">
           {formattedDate}
-          {comment.updated_at !== comment.created_at ? ' · 수정됨' : ''}</div>
+          {comment.updated_at !== comment.created_at ? ' · 수정됨' : ''}
+        </div>
       </div>
 
       {!isEditing ? (

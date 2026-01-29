@@ -89,10 +89,7 @@ export default function BoardDetail({ icon, title }: BoardDetailProps) {
 
       <div className="whitespace-pre-line leading-7 text-sm px-2">{post.content}</div>
 
-      <CommentSection
-        postId={post.id}
-        currentUserId={user.id}
-      />
+      <CommentSection postId={post.id} currentUserId={user.id} />
 
       {isEditOpen && (
         <CommunityModal

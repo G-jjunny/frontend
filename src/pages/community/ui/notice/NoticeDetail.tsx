@@ -28,10 +28,7 @@ export default function NoticeDetail() {
       list={[boardItem]}
       notFoundMessage="존재하지 않는 공지사항입니다."
     >
-      <CommentSection
-        postId={data.id}
-        currentUserId={1}
-      />
+      <CommentSection postId={data.id} currentUserId={1} />
     </BoardDetail>
   );
 }
