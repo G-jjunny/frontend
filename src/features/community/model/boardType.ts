@@ -43,6 +43,11 @@ export interface BoardProps<T extends BaseRow> {
     category: '공지' | '자유게시판';
   }>;
   columns: Column<T>[];
+  pagination?: {
+    currentPage: number;
+    totalPages: number;
+    onChangePage: (page: number) => void;
+  };
 }
 
 // BoardDetail

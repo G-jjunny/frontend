@@ -1,4 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -11,7 +10,7 @@ import {
 } from '../api/queries';
 
 import CommentSection from './comment/CommentSection';
-import EditPostModal from './EditModal';
+import CommunityModal from './CommunityModal';
 
 import type { BoardDetailProps } from '../model/boardType';
 
@@ -23,7 +22,6 @@ export default function BoardDetail({ icon, title }: BoardDetailProps) {
 
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const queryClient = useQueryClient();
 
   const { data: post, isLoading, isError } = useCommunityPostDetailQuery(postId);
 
@@ -38,23 +36,6 @@ export default function BoardDetail({ icon, title }: BoardDetailProps) {
 
   const isMine = post.author_id === user.id;
   const formattedDate = dayjs(post.created_at).format('YYYY-MM-DD HH:mm');
-
-  // 수정 핸들러
-  const handleUpdate = async (data: { title: string; content: string }) => {
-    try {
-      await updateMutation.mutateAsync({ id: post.id, data });
-
-      queryClient.setQueryData(['communityPost', post.id], {
-        ...post,
-        ...data,
-      });
-
-      toast.success('수정되었습니다!');
-      setIsEditOpen(false);
-    } catch {
-      toast.error('수정이 실패되었습니다.');
-    }
-  };
 
   // 삭제 핸들러
   const handleDelete = async () => {
@@ -115,13 +96,20 @@ export default function BoardDetail({ icon, title }: BoardDetailProps) {
       />
 
       {isEditOpen && (
-        <EditPostModal
-          onClose={() => setIsEditOpen(false)}
-          onSubmit={(content) => {
-            void handleUpdate(content);
-          }}
+        <CommunityModal
+          mode="edit"
           category={post.category}
-          initialData={{ title: post.title, content: post.content }}
+          initialData={{
+            title: post.title,
+            content: post.content,
+          }}
+          onSubmit={async (data) => {
+            await updateMutation.mutateAsync({
+              id: post.id,
+              data,
+            });
+          }}
+          onClose={() => setIsEditOpen(false)}
         />
       )}
     </div>

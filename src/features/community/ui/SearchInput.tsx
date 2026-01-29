@@ -6,7 +6,7 @@ interface SearchInputProps {
   delay?: number;
 }
 
-export default function SearchInput({ placeholder, onSearch, delay = 700 }: SearchInputProps) {
+export default function SearchInput({ placeholder, onSearch, delay = 500 }: SearchInputProps) {
   const [value, setValue] = useState('');
 
   // 검색 딜레이 주기
