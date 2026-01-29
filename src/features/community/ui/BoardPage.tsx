@@ -67,10 +67,7 @@ export function BoardPage<T extends BaseRow>({
         <thead>
           <tr className="border-b text-sm text-gray-600">
             {columns.map((col) => (
-              <th
-                key={String(col.key)}
-                className={`py-3 ${col.width ? `w-${col.width}` : ''} text-left`}
-              >
+              <th key={String(col.key)} className="py-3 text-left" style={{ width: col.width }}>
                 {col.header}
               </th>
             ))}

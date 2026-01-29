@@ -46,11 +46,13 @@ export default function NoticePage() {
         {
           header: 'NO',
           key: 'id',
+          width: '80px',
           render: (_, idx) => total - (pages - 1) * pageSize - idx,
         },
         {
           header: '제목',
           key: 'title',
+          width: '60%',
           render: (item) => (
             <Link to={`${item.id}`} className="hover:underline">
               {item.title}
@@ -60,6 +62,7 @@ export default function NoticePage() {
         {
           header: '작성자',
           key: 'author_name',
+          width: '150px',
         },
         {
           header: '작성일자',
