@@ -38,3 +38,12 @@
     letter-spacing: 1px;
   }
 }
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}

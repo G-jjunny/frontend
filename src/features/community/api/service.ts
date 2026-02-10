@@ -1,6 +1,7 @@
 import { apiClient } from '../../../shared/api/apiClients';
 
 import type {
+  CategoryCountsResponse,
   CommentDTO,
   CommentsResponseDTO,
   CommunityPostDTO,
@@ -43,6 +44,12 @@ export const updatePost = (id: number, data: Partial<CreatePostRequestDTO>) =>
 export const deletePost = (id: number) =>
   apiClient.delete<{ success: boolean }>({
     url: `/api/community/posts/${id}`,
+  });
+
+// 카테고리별 글 갯수 GET
+export const getCategoryCounts = () =>
+  apiClient.get<CategoryCountsResponse>({
+    url: '/api/community/category-counts',
   });
 
 // 🔖 댓글

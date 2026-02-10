@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui
 
 const FormCard = () => {
   return (
-    <Card className="w-full max-w-sm gap-5">
+    <Card className="w-full max-w-sm">
       <CardHeader className=" grid-rows-[auto]">
         <CardTitle className=" flex gap-2 items-center text-xl text-mega">
           <LockIcon className=" text-mega" /> <h2>LOGIN</h2>

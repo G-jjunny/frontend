@@ -1,10 +1,16 @@
 import { useMemo, useState } from 'react';
 
-import { BoardCard } from './BoardCard';
-import Pagenation from './Pagenation';
-import SearchInput from './SearchInput';
+import { useCommunityPostDetailQuery } from '../../api/queries';
+import { useEditPostFlow } from '../../model/useEditPostFlow';
+import BoardDetailContent from '../detail/BoardDetailContent';
+import CommunityModal from '../modal/CommunityModal';
+import { DetailModal } from '../modal/DetailModal';
+import Pagenation from '../Pagenation';
+import SearchInput from '../SearchInput';
 
-import type { BoardPost, BoardProps } from '../model/boardType';
+import { BoardCard } from './BoardCard';
+
+import type { BoardPost, BoardProps } from '../../model/boardType';
 
 import { Button } from '@/shared/components/ui/button';
 
@@ -15,9 +21,16 @@ export function BoardPage<T extends BoardPost>({
   ModalComponent,
   pagination,
   renderBadge,
+  title,
+  icon,
 }: BoardProps<T>) {
+  const { editPost, selectedPostId, startEdit, submitEdit, closeEdit, closeDetail, openDetail } =
+    useEditPostFlow();
+
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+
+  const { data: detailPost } = useCommunityPostDetailQuery(selectedPostId);
 
   const filteredList = useMemo(
     () =>
@@ -46,7 +59,12 @@ export function BoardPage<T extends BoardPost>({
 
       <div className="flex flex-col gap-4">
         {filteredList.map((item) => (
-          <BoardCard key={item.id} item={item} href={`${item.id}`} badge={renderBadge?.(item)} />
+          <BoardCard
+            key={item.id}
+            item={item}
+            badge={renderBadge?.(item)}
+            onClick={() => openDetail(item.id)}
+          />
         ))}
       </div>
 
@@ -65,6 +83,29 @@ export function BoardPage<T extends BoardPost>({
           onSubmit={(data: { title: string; content: string }) => {
             console.log(data);
           }}
+        />
+      )}
+      {detailPost && (
+        <DetailModal onClose={closeDetail}>
+          <BoardDetailContent
+            post={detailPost}
+            title={typeof title === 'function' ? title(detailPost) : title}
+            icon={typeof icon === 'function' ? icon(detailPost) : icon}
+            onEdit={startEdit}
+            onClose={closeDetail}
+          />
+        </DetailModal>
+      )}
+      {editPost && (
+        <CommunityModal
+          mode="edit"
+          category={editPost.category}
+          initialData={{
+            title: editPost.title,
+            content: editPost.content,
+          }}
+          onSubmit={submitEdit}
+          onClose={closeEdit}
         />
       )}
     </div>

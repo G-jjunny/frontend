@@ -1,5 +1,5 @@
-import { BoardPage } from '../../../../features/community/ui/BoardPage';
-import { Badge } from '../badge';
+import { Badge } from '../../../../features/community/ui/badge';
+import { BoardPage } from '../../../../features/community/ui/main/BoardPage';
 
 import { communityPostList } from '@/features/community/mock/communityMock';
 import { SHIFT_TYPE_LABEL } from '@/features/community/model/statusLabel';

@@ -3,8 +3,8 @@ import { useParams } from 'react-router';
 
 import { useCommunityPostDetailQuery } from '@/features/community/api/queries';
 import { mapBoardDetail } from '@/features/community/model/mapper';
-import BoardDetail from '@/features/community/ui/BoardDetail';
 import CommentSection from '@/features/community/ui/comment/CommentSection';
+import BoardDetail from '@/features/community/ui/detail/BoardDetail';
 
 export default function NoticeDetail() {
   const { id } = useParams<{ id: string }>();

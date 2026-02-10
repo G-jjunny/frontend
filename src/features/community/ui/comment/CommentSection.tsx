@@ -1,3 +1,4 @@
+import { MessageSquare } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -69,8 +70,11 @@ export default function CommentSection({ postId, currentUserId }: CommentSection
   };
 
   return (
-    <div className="mt-8 border-t pt-6 flex flex-col gap-4">
-      <h3 className="font-bold">댓글 {comments.length}</h3>
+    <div className="mt-8 border-t border-gray-200 pt-6 flex flex-col gap-4 p-6">
+      <div className="flex items-center gap-2">
+        <MessageSquare size={15} color="#374151" />
+        <h3 className="font-bold text-xs text-gray-700">댓글 {comments.length}</h3>
+      </div>
 
       <CommentList
         comments={comments}

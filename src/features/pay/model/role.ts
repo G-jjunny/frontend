@@ -19,6 +19,6 @@ export function isUserPosition(value: unknown): value is UserPosition {
 }
 
 // manager position 타입 가드 → 아직 미사용 주석처리
-// export function isManagerPosition(value: unknown): value is ManagerPosition {
-//     return typeof value === 'string' && (MANAGER_POSITIONS as readonly string[]).includes(value)
-// }
+export function isManagerPosition(value: unknown): value is ManagerPosition {
+  return typeof value === 'string' && (MANAGER_POSITIONS as readonly string[]).includes(value);
+}

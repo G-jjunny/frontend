@@ -28,7 +28,7 @@ export interface CommentDTO {
 // 게시글 DTO
 export interface CommunityPostDTO {
   id: number;
-  category: '공지' | '자유게시판' | '근무교대' | '휴무';
+  category: '공지' | '자유게시판' | '근무교대' | '휴무신청';
   title: string;
   content: string;
   author_id: number;
@@ -74,4 +74,9 @@ export interface GetCommunityPostsParams {
   page_size?: number;
   search?: string;
   order?: 'latest' | 'oldest' | 'popular';
+}
+
+// 카테고리별 글 갯수
+export interface CategoryCountsResponse {
+  counts: Record<string, number>;
 }

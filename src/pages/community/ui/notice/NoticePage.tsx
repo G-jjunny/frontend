@@ -1,14 +1,17 @@
+import { Megaphone } from 'lucide-react';
 import { useState } from 'react';
 
-import { Badge } from '../badge';
+import { Badge } from '../../../../features/community/ui/badge';
+import CommunityModal from '../../../../features/community/ui/modal/CommunityModal';
 
 import { useCommunityPostsQuery } from '@/features/community/api/queries';
-import { BoardPage } from '@/features/community/ui/BoardPage';
-import CommunityModal from '@/features/community/ui/CommunityModal';
-import { ROLE } from '@/features/pay/model/role';
+import { BoardPage } from '@/features/community/ui/main/BoardPage';
+import { isManagerPosition } from '@/features/pay/model/role';
+import { useAuthStore } from '@/shared/model/authStore';
 
 export default function NoticePage() {
-  const user = { role: ROLE.MANAGER };
+  // const user = { role: ROLE.MANAGER };
+  const { user } = useAuthStore();
 
   const [page, setPage] = useState(1);
 
@@ -27,7 +30,7 @@ export default function NoticePage() {
   return (
     <BoardPage
       list={noticeList}
-      canWrite={user.role === ROLE.MANAGER}
+      canWrite={!!user && isManagerPosition(user.position)}
       category="공지"
       renderBadge={() => <Badge variant="notice" label="공지" />}
       pagination={{
@@ -38,6 +41,8 @@ export default function NoticePage() {
       ModalComponent={(props) => (
         <CommunityModal {...props} mode="create" category="공지" onSubmit={async () => {}} />
       )}
+      icon={<Megaphone />}
+      title="공지사항"
     />
   );
 }

@@ -16,7 +16,7 @@ export default function PayPage() {
   const [role, setRole] = useState<Role>(ROLE.USER);
 
   // 테스트용 user 설정
-  const [currentUserName, setCurrentUserName] = useState('김하늘');
+  const [currentUserName] = useState('김하늘');
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
   const periodOptions: Array<'연도' | '반기' | '월'> = ['연도', '반기', '월'];

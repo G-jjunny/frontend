@@ -1,10 +1,14 @@
 import { useState } from 'react';
 
-import { Badge } from './badge';
+import { Badge } from '../../../features/community/ui/badge';
 
 import { useCommunityPostsQuery } from '@/features/community/api/queries';
-import { mapCategoryToVariant } from '@/features/community/model/category';
-import { BoardPage } from '@/features/community/ui/BoardPage';
+import {
+  getIconForCategory,
+  getTitleForCategory,
+  mapCategoryToVariant,
+} from '@/features/community/model/category';
+import { BoardPage } from '@/features/community/ui/main/BoardPage';
 
 export default function CommunityPage() {
   const [page, setPage] = useState(1);
@@ -28,6 +32,8 @@ export default function CommunityPage() {
         totalPages: data?.total_pages ?? 1,
         onChangePage: setPage,
       }}
+      title={(item) => getTitleForCategory(item.category)}
+      icon={(item) => getIconForCategory(item.category)}
     />
   );
 }

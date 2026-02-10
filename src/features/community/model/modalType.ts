@@ -1,6 +1,6 @@
 export interface PostModalProps {
   mode: 'create' | 'edit';
-  category: '공지' | '자유게시판';
+  category: '공지' | '자유게시판' | '근무교대' | '휴무신청';
   initialData?: {
     title: string;
     content: string;

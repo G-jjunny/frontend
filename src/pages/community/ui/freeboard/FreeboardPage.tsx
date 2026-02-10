@@ -1,10 +1,11 @@
+import { MessagesSquare } from 'lucide-react';
 import { useState } from 'react';
 
-import { Badge } from '../badge';
+import { Badge } from '../../../../features/community/ui/badge';
+import CommunityModal from '../../../../features/community/ui/modal/CommunityModal';
 
 import { useCommunityPostsQuery } from '@/features/community/api/queries';
-import { BoardPage } from '@/features/community/ui/BoardPage';
-import CommunityModal from '@/features/community/ui/CommunityModal';
+import { BoardPage } from '@/features/community/ui/main/BoardPage';
 
 export default function FreeboardPage() {
   const [page, setPage] = useState(1);
@@ -32,6 +33,8 @@ export default function FreeboardPage() {
       ModalComponent={(props) => (
         <CommunityModal {...props} mode="create" category="자유게시판" onSubmit={async () => {}} />
       )}
+      icon={<MessagesSquare />}
+      title="자유게시판"
     />
   );
 }
