@@ -12,22 +12,26 @@ const PayOverview = () => {
     select: normalizePayOverview,
   });
   const payDate = `${year}-${month}-10`;
+  const iconSize = 16;
 
   const stats = [
     {
-      icon: <Calendar />,
+      icon: <Calendar size={iconSize} />,
       label: '근무일수',
-      value: `${data.total_work_days}일`,
+      value: `${data.total_work_days}`,
+      valueLabel: '일',
     },
     {
-      icon: <ChartLine />,
+      icon: <ChartLine size={iconSize} />,
       label: '총 근무시간',
-      value: `${data.total_work_hours}시간`,
+      value: `${data.total_work_hours}`,
+      valueLabel: '시간',
     },
     {
-      icon: <History />,
+      icon: <History size={iconSize} />,
       label: '마지막 근무일',
-      value: `${data.total_work_days}일`,
+      value: `${data.total_work_days}`,
+      valueLabel: '일',
     },
   ];
 
@@ -48,14 +52,19 @@ const PayOverview = () => {
         <p className="text-sm text-mega-gray-light">공제계</p>{' '}
         <h4 className="text-red-light">{data?.total_deduction.toLocaleString()}원</h4>
       </div>
-      <div className=" flex justify-between">
-        {stats.map(({ icon, label, value }) => (
-          <div key={label} className="flex flex-col gap-6 items-center">
+      <div className=" flex justify-between gap-4">
+        {stats.map(({ icon, label, value, valueLabel }) => (
+          <div
+            key={label}
+            className=" w-full flex flex-col gap-4 items-start bg-mega-gray-light/30 p-3 rounded-lg"
+          >
             <div className="flex gap-2 items-center">
               {icon}
               <p className="text-xs">{label}</p>
             </div>
-            <p>{value}</p>
+            <p>
+              {value} <span className="text-xs">{valueLabel}</span>
+            </p>
           </div>
         ))}
       </div>

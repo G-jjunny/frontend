@@ -8,10 +8,10 @@ const iconAvatarVariants = cva('flex items-center justify-center rounded-full sh
     variant: {
       default: 'bg-muted text-foreground',
       purple: 'bg-mega-secondary text-white',
-      blue: 'bg-mega-light-blue text-mega',
+      blue: 'bg-mega-blue text-white',
       green: 'bg-green-100 text-green-600',
       red: 'bg-red-100 text-red-600',
-      gray: 'bg-gray-100 text-gray-600',
+      gray: 'bg-mega-gray-light/30 text-white',
     },
     size: {
       sm: 'h-8 w-8 [&_svg]:h-4 [&_svg]:w-4',
@@ -52,4 +52,4 @@ function IconAvatar({ className, variant, size, children, ...props }: IconAvatar
   );
 }
 
-export { IconAvatar };
+export { IconAvatar, iconAvatarVariants };

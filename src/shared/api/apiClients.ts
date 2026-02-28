@@ -10,7 +10,6 @@ export const axiosInstance: AxiosInstance = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-// [TODO]: 인터셉터 추가
 axiosInstance.interceptors.request.use(requestInterceptor);
 axiosInstance.interceptors.response.use(responseInterceptor, rejectInterceptor);
 
@@ -20,6 +19,8 @@ export const apiClient = {
 
   post: <T>(config: AxiosRequestConfig) =>
     axiosInstance.post<T>(config.url!, config.data, config).then((response) => response.data),
+  put: <T>(config: AxiosRequestConfig) =>
+    axiosInstance.put<T>(config.url!, config.data, config).then((response) => response.data),
   patch: <T>(config: AxiosRequestConfig) =>
     axiosInstance.patch<T>(config.url!, config.data, config).then((response) => response.data),
   delete: <T>(config: AxiosRequestConfig) =>

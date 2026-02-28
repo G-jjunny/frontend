@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { Clock } from 'lucide-react';
+import { Clock, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -12,6 +12,8 @@ import { useNow } from '../model/useNow';
 import type { WorkAction } from '@/entities/work-status/api/dto';
 
 import { workStatusService } from '@/entities/work-status/api/service';
+// eslint-disable-next-line fsd-import/layer-imports
+import LogoutBtn from '@/features/login/ui/LogoutBtn';
 import { isApiError } from '@/shared/api/error';
 import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/shared/components/ui/card';
@@ -64,7 +66,10 @@ const WorkStatusForm = () => {
   };
 
   return (
-    <Card variant="purpleMain">
+    <Card variant="purpleMain" className="relative">
+      <LogoutBtn className="absolute top-4 right-4">
+        <LogOut size={20} />
+      </LogoutBtn>
       <CardHeader className="flex flex-col gap-2 justify-center items-center">
         <div className="flex gap-2 items-center justify-center">
           <Clock size={20} />

@@ -6,9 +6,11 @@ import type { User } from '@/entities/user/model/user';
 
 interface AuthState {
   accessToken: string | null;
+  refreshToken?: string | null;
   user: User | null;
   isAuthenticated: boolean;
   setAccessToken: (token: string | null) => void;
+  setRefreshToken: (token: string | null) => void;
   setAuth: () => void;
   setUser: (user: User | null) => void;
   clearAuth: () => void;
@@ -18,12 +20,18 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       accessToken: null,
+      refreshToken: null,
       user: null,
       isAuthenticated: false,
 
       setAccessToken: (token) =>
         set({
           accessToken: token,
+        }),
+
+      setRefreshToken: (token) =>
+        set({
+          refreshToken: token,
         }),
 
       setAuth: () =>
@@ -39,6 +47,8 @@ export const useAuthStore = create<AuthState>()(
       clearAuth: () => {
         set({
           accessToken: null,
+          refreshToken: null,
+          user: null,
           isAuthenticated: false,
         });
       },
@@ -47,6 +57,7 @@ export const useAuthStore = create<AuthState>()(
       name: 'auth-storage',
       partialize: (state) => ({
         accessToken: state.accessToken,
+        refreshToken: state.refreshToken,
         isAuthenticated: state.isAuthenticated,
         user: state.user,
       }),

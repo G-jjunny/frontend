@@ -30,8 +30,16 @@ function appendFormData(formData: FormData, key: string, value: unknown) {
 
 export const requestInterceptor = (config: InternalAxiosRequestConfig) => {
   // [TODOS] 토큰 가져오기
-  const { accessToken } = useAuthStore.getState();
+  const { accessToken, refreshToken } = useAuthStore.getState();
   config.headers = config.headers ?? {};
+  const url = config.url ?? '';
+
+  if (url.includes('/api/auth/logout')) {
+    if (refreshToken) {
+      (config.headers as Record<string, string>).Authorization = `Bearer ${refreshToken}`;
+    }
+    return config;
+  }
 
   if (accessToken) {
     (config.headers as Record<string, string>).Authorization = `Bearer ${accessToken}`;

@@ -1,11 +1,16 @@
-import { Bell, KeyRound, Lock, CirclePlus } from 'lucide-react';
+import { Bell, KeyRound, Lock, CirclePlus, Menu } from 'lucide-react';
 import { useMemo } from 'react';
 import { Link } from 'react-router';
 
 import logo from '../../shared/assets/logo/Megabox_Logo_Indigo.png';
+import { Button } from '../../shared/components/ui/button';
 import { ROUTES } from '../../shared/constants/routes';
 
-export const Header = () => {
+interface HeaderProps {
+  onMenuClick?: () => void;
+}
+
+export const Header = ({ onMenuClick }: HeaderProps) => {
   const today = useMemo(() => {
     return new Date().toISOString().slice(0, 10);
   }, []);
@@ -16,13 +21,20 @@ export const Header = () => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-full h-14 bg-mega-header-blue flex justify-between items-center px-5 z-50">
+      <div className="fixed top-0 left-0 w-full h-14 bg-white flex justify-between items-center px-5 z-50 shadow-sm">
         {/* 왼쪽 로고 + 타이틀 */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden text-mega-secondary hover:bg-mega-secondary/10 hover:text-white"
+            onClick={onMenuClick}
+          >
+            <Menu className="size-5" />
+          </Button>
           <Link to={ROUTES.ROOT}>
             <img src={logo} alt="logo" className={`${logoHover} h-6`} />
           </Link>
-          <div className="font-bold">M SYSTEM</div>
         </div>
         {/* 오른쪽 유저 이름 (메박이) + 날짜 */}
         <div className="flex items-center gap-4">

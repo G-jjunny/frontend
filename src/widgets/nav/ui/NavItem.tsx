@@ -10,7 +10,13 @@ interface NavItemProps {
 
 const NavItem = ({ icon: Icon, active, onClick }: NavItemProps) => {
   return (
-    <Button variant={active ? 'default' : 'nav'} size="icon-lg" rounded="lg" onClick={onClick}>
+    <Button
+      variant={active ? 'default' : 'nav'}
+      size="icon-lg"
+      rounded="lg"
+      onClick={onClick}
+      className="shadow-sm"
+    >
       <Icon className="size-5" />
     </Button>
   );
