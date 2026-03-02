@@ -6,7 +6,7 @@ import CommentSection from '../comment/CommentSection';
 
 import type { CommunityPostDTO } from '../../api/dto';
 
-import { useAuthStore } from '@/shared/model/authStore';
+import { useUserQuery } from '@/entities/user/api/queries';
 
 interface BoardDetailContentProps {
   post: CommunityPostDTO;
@@ -23,7 +23,7 @@ export default function BoardDetailContent({
   onClose,
   onEdit,
 }: BoardDetailContentProps) {
-  const { user } = useAuthStore();
+  const { data: user } = useUserQuery();
 
   const deleteMutation = useDeletePostMutation();
 

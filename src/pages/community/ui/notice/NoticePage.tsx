@@ -4,14 +4,13 @@ import { useState } from 'react';
 import { Badge } from '../../../../features/community/ui/badge';
 import CommunityModal from '../../../../features/community/ui/modal/CommunityModal';
 
+import { useUserQuery } from '@/entities/user/api/queries';
 import { useCommunityPostsQuery } from '@/features/community/api/queries';
 import { BoardPage } from '@/features/community/ui/main/BoardPage';
 import { isManagerPosition } from '@/features/pay/model/role';
-import { useAuthStore } from '@/shared/model/authStore';
 
 export default function NoticePage() {
-  // const user = { role: ROLE.MANAGER };
-  const { user } = useAuthStore();
+  const { data: user } = useUserQuery();
 
   const [page, setPage] = useState(1);
 
