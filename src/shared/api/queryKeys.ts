@@ -22,6 +22,17 @@ export const QUERY_KEYS = {
     detail: (payId: number) => [...QUERY_KEYS.pay.base, 'detail', payId] as const,
   },
 
+  schedule: {
+    base: ['schedule'] as const,
+    week: (year: number, week: number) =>
+      [...QUERY_KEYS.schedule.base, 'week', year, week] as const,
+    dayoffsBase: () => [...QUERY_KEYS.schedule.base, 'dayoffs'] as const,
+    dayoffs: (status?: string) => [...QUERY_KEYS.schedule.base, 'dayoffs', 'list', status] as const,
+    shiftsBase: () => [...QUERY_KEYS.schedule.base, 'shifts'] as const,
+    shifts: () => [...QUERY_KEYS.schedule.base, 'shifts', 'list'] as const,
+    users: () => [...QUERY_KEYS.schedule.base, 'users'] as const,
+  },
+
   admin: {
     base: ['admin'] as const,
     holidaysBase: () => [...QUERY_KEYS.admin.base, 'holidays'] as const,

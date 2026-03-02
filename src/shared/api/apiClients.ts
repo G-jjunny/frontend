@@ -1,6 +1,6 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios';
 
-import { rejectInterceptor, requestInterceptor, responseInterceptor } from './interceptors';
+import { createRejectInterceptor, requestInterceptor, responseInterceptor } from './interceptors';
 
 const BASE_URL = (import.meta.env.VITE_BASE_URL as string) || 'http://localhost:8000';
 
@@ -11,7 +11,10 @@ export const axiosInstance: AxiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(requestInterceptor);
-axiosInstance.interceptors.response.use(responseInterceptor, rejectInterceptor);
+axiosInstance.interceptors.response.use(
+  responseInterceptor,
+  createRejectInterceptor(axiosInstance, BASE_URL),
+);
 
 export const apiClient = {
   get: <T>(config: AxiosRequestConfig) =>

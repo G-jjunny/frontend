@@ -8,5 +8,6 @@ export const ROUTES = {
   COMMUNITY: '/community',
   WORK_STATUS: '/work-status',
   ADMIN: '/admin',
+  SCHEDULE: '/schedule',
   NOT_FOUND: '*',
 } as const;

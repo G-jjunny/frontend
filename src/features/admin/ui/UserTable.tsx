@@ -2,6 +2,7 @@ import { Pencil, Trash2 } from 'lucide-react';
 
 import type { AdminUserDTO } from '../api/dto';
 
+import { getPositionBadgeStyle } from '@/entities/user/model/position';
 import { Badge } from '@/shared/components/ui/badge';
 import { Button } from '@/shared/components/ui/button';
 import {
@@ -19,13 +20,6 @@ interface UserTableProps {
   onDelete: (user: AdminUserDTO) => void;
   isDeletePending?: boolean;
 }
-
-const POSITION_BADGE: Record<string, string> = {
-  바이저: 'bg-blue-100 text-blue-700 border-blue-200',
-  리더: 'bg-green-100 text-green-700 border-green-200',
-  크루: 'bg-mega-secondary/10 text-mega-secondary border-mega-secondary/20',
-  점장: 'bg-orange/10 text-orange border-orange/20',
-};
 
 const maskSsn = (ssn?: string) => {
   if (!ssn) return '-';
@@ -71,10 +65,7 @@ const UserTable = ({ users, onEdit, onDelete, isDeletePending }: UserTableProps)
               <TableCell className="text-muted-foreground">••••••</TableCell>
               <TableCell className="font-medium">{user.name}</TableCell>
               <TableCell>
-                <Badge
-                  variant="outline"
-                  className={POSITION_BADGE[user.position] ?? 'bg-muted text-muted-foreground'}
-                >
+                <Badge variant="outline" className={getPositionBadgeStyle(user.position)}>
                   {user.position}
                 </Badge>
               </TableCell>

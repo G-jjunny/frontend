@@ -24,6 +24,7 @@ import CommunityPage from '@/pages/community/ui/CommunityPage';
 import { HomePage } from '@/pages/home';
 import { LoginPage } from '@/pages/login';
 import PayPage from '@/pages/payroll/PayPage';
+import { SchedulePage } from '@/pages/schedule';
 import { WorkStatusPage } from '@/pages/work-status';
 
 export const router = createBrowserRouter([
@@ -78,6 +79,10 @@ export const router = createBrowserRouter([
       {
         path: ROUTES.PAY,
         element: <PayPage />,
+      },
+      {
+        path: ROUTES.SCHEDULE,
+        element: <SchedulePage />,
       },
       {
         path: ROUTES.ADMIN,
