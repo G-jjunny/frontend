@@ -1,6 +1,7 @@
+import { Search } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-import { Input } from '@/shared/components/ui/input';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/shared/components/ui/input-group';
 
 interface SearchInputProps {
   placeholder?: string;
@@ -23,12 +24,17 @@ export default function SearchInput({ placeholder, onSearch, delay = 500 }: Sear
   }, [value, onSearch, delay]);
 
   return (
-    <Input
-      type="text"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      placeholder={placeholder || '검색어를 입력하세요'}
-      className="border px-3 py-1 placeholder:text-xs bg-white"
-    />
+    <InputGroup className="bg-white">
+      <InputGroupAddon>
+        <Search className="size-4" />
+      </InputGroupAddon>
+      <InputGroupInput
+        type="text"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder={placeholder || '검색어를 입력하세요'}
+        className="px-3 py-1 placeholder:text-xs"
+      />
+    </InputGroup>
   );
 }

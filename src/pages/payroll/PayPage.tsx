@@ -1,112 +1,86 @@
 import { useState } from 'react';
 
-import { mockUserPayroll } from '../../features/pay/mock/payUserMock';
 import UserPosition from '../../features/pay/ui/UserPosition';
-import { DropdownSelect } from '../../shared/components/ui/dropdown-select';
+import logo from '../../shared/assets/logo/Megabox_Logo_Indigo.png';
 
-import type { PayrollData } from '@/features/pay/model/manager/type';
-
-import { mockPayroll, ManagerPositions } from '@/features/pay';
-import { ROLE, type Role } from '@/features/pay/model/role';
-import { isUserPosition } from '@/features/pay/model/role';
-import { Button } from '@/shared/components/ui/button';
-import { Card, CardContent } from '@/shared/components/ui/card';
+import { ManagerPositions } from '@/features/pay';
+import { usePayrollQuery } from '@/features/pay/api/queries';
+import { mapToManagerPayroll } from '@/features/pay/model/manager/mapper';
+import { mapToUserPayroll } from '@/features/pay/model/user/mapper';
+import PeriodSelector from '@/features/pay/ui/PeriodSelector';
+import { EmptyBox } from './ui/EmptyBox';
+import { useAuthStore } from '@/shared/model/authStore';
+import { USER_ROLES } from '@/entities/user/model/role';
 
 export default function PayPage() {
-  const [role, setRole] = useState<Role>(ROLE.USER);
-
-  // 테스트용 user 설정
-  const [currentUserName] = useState('김하늘');
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
-  const periodOptions: Array<'연도' | '반기' | '월'> = ['연도', '반기', '월'];
-  const halfOptions = ['상반기 (1~6월)', '하반기 (7~12월)'];
 
-  const startYear = 2020;
-
-  const years = Array.from(
-    { length: currentYear - startYear + 1 },
-    (_, year) => startYear + year,
-  ).reverse();
-
-  const months = Array.from({ length: 12 }, (_, month) => month + 1);
-
-  const [periodType, setPeriodType] = useState<'연도' | '반기' | '월'>('월');
   const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
-  const [selectedHalf, setSelectedHalf] = useState('상반기 (1~6월)');
+  const [selectedMonth, setSelectedMonth] = useState<number>(currentMonth);
 
-  // let filteredData = [];
+  const { data: payrollList } = usePayrollQuery({
+    year: selectedYear,
+    month: selectedMonth,
+  });
 
-  const filteredData: PayrollData[] =
-    role === ROLE.MANAGER
-      ? mockPayroll.filter((user: PayrollData) => isUserPosition(user.position))
-      : mockPayroll.filter((user: PayrollData) => user.name === currentUserName);
+  // 데이터 없을 때 응답값: 유저 - null / 매니저 - 빈 배열
+  const isEmptyPayroll =
+    !payrollList ||
+    (Array.isArray(payrollList) && payrollList.length === 0) ||
+    (!Array.isArray(payrollList) && payrollList.name === '');
+
+  const { user } = useAuthStore(); // 예시
+
+const isUser = user?.position === USER_ROLES.CREW;
+  
+  const selector = (
+    <PeriodSelector
+      selectedYear={selectedYear}
+      selectedMonth={selectedMonth}
+      onChangeYear={setSelectedYear}
+      onChangeMonth={setSelectedMonth}
+    />
+  );
 
   return (
     <div className="flex flex-col gap-5 w-full">
-      <div className="text-2xl font-bold">급여현황</div>
-      <div>
-        <div className="flex gap-2">
-          <Button
-            className={`px-3 py-1 border rounded ${
-              role === ROLE.MANAGER ? 'bg-blue-500 text-white' : ''
-            }`}
-            onClick={() => setRole(ROLE.MANAGER)}
-          >
-            관리직 로그인
-          </Button>
+      <img src={logo} alt="logo" className="w-50 self-center mb-4" />
 
-          <Button
-            className={`px-3 py-1 border rounded ${
-              role === ROLE.USER ? 'bg-green-900 text-white' : ''
-            }`}
-            onClick={() => setRole(ROLE.USER)}
-          >
-            일반직 로그인
-          </Button>
-        </div>
+
+    {isUser ? (
+      <div className="flex justify-center px-4">
+        <div className="w-full max-w-3xl">{selector}</div>
       </div>
+    ) : (
+      selector
+    )}
 
-      <Card variant="blueMain">
-        <CardContent className="flex flex-col md:flex-row md:items-center gap-5 w-full">
-          <DropdownSelect
-            label="조회 기준"
-            items={periodOptions}
-            value={periodType}
-            onChange={(v) => setPeriodType(v)}
+      
+      {isEmptyPayroll && (
+        isUser ? (
+          <div className="flex justify-center px-4">
+            <div className="w-full max-w-3xl">
+              <EmptyBox
+                selectedYear={selectedYear}
+                selectedMonth={selectedMonth}
+              />
+            </div>
+          </div>
+        ) : (
+          <EmptyBox
+            selectedYear={selectedYear}
+            selectedMonth={selectedMonth}
           />
+        )
+      )}
 
-          <DropdownSelect
-            label="급여 연도"
-            items={years}
-            value={selectedYear}
-            onChange={setSelectedYear}
-          />
+      {!isEmptyPayroll && payrollList && !Array.isArray(payrollList) && (
+        <UserPosition data={mapToUserPayroll(payrollList)} />
+      )}
 
-          {periodType === '반기' && (
-            <DropdownSelect
-              label="급여 반기"
-              items={halfOptions}
-              value={selectedHalf}
-              onChange={setSelectedHalf}
-            />
-          )}
-
-          {periodType === '월' && (
-            <DropdownSelect
-              label="급여 월"
-              items={months}
-              value={selectedMonth}
-              onChange={setSelectedMonth}
-            />
-          )}
-        </CardContent>
-      </Card>
-
-      {role === ROLE.USER && <UserPosition data={mockUserPayroll} />}
-      {role === ROLE.MANAGER && filteredData.length > 0 && (
-        <ManagerPositions filteredData={filteredData} />
+      {!isEmptyPayroll && payrollList && Array.isArray(payrollList) && (
+        <ManagerPositions filteredData={mapToManagerPayroll(payrollList)} />
       )}
     </div>
   );

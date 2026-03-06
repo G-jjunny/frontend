@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
 
+import SearchInput from '../../../../shared/components/ui/SearchInput';
 import { useCommunityPostDetailQuery } from '../../api/queries';
 import { useEditPostFlow } from '../../model/useEditPostFlow';
 import BoardDetailContent from '../detail/BoardDetailContent';
 import CommunityModal from '../modal/CommunityModal';
 import { DetailModal } from '../modal/DetailModal';
 import Pagenation from '../Pagenation';
-import SearchInput from '../SearchInput';
 
 import { BoardCard } from './BoardCard';
 

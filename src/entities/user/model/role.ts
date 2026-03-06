@@ -18,3 +18,9 @@ export const hasCrewAccess = (position: string): boolean => {
 export const isSystemAccount = (position: string): boolean => {
   return position === USER_ROLES.SYSTEM;
 };
+
+export const ROLE_STYLES: Record<UserRole, string> = {
+  크루: 'bg-gray-200 text-gray-800',
+  점장: 'bg-green-100 text-green-600',
+  시스템: 'bg-blue-100 text-blue-600',
+};

@@ -1,8 +1,6 @@
-// entities/pay/model/normalize.ts
+import type { PayrollResponseDTO } from '../../../features/pay/api/dto';
 
-import type { PayResponseDTO } from '../api/dto';
-
-export const normalizePayOverview = (data?: PayResponseDTO) => ({
+export const normalizePayOverview = (data?: PayrollResponseDTO) => ({
   net_pay: data?.net_pay ?? 0,
   gross_pay: data?.gross_pay ?? 0,
   total_deduction: data?.total_deduction ?? 0,

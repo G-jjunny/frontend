@@ -3,9 +3,9 @@ import { CommunityCard, PayOverviewCard, UserCalendarCard } from '@/widgets/home
 
 const HomePage = () => {
   return (
-    <div className="flex flex-col gap-6 w-full max-w-4xl mx-auto mb-5">
+    <div className="w-full max-w-5xl mx-auto mb-5">
       <PageLogo color="purple" />
-      <div className="flex flex-col gap-6 lg:flex-row">
+      <div className="pt-5 flex flex-col gap-6 lg:flex-row">
         <UserCalendarCard />
         <div className="w-full flex flex-col gap-6">
           <PayOverviewCard />

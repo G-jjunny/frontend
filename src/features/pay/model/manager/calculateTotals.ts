@@ -1,10 +1,41 @@
-import type { PayrollData } from './type';
+export interface PayrollCalculatable {
+  total_work_days?: number | null;
+  total_work_hours?: number | null;
+  avg_daily_hours?: number | null;
 
-type NumberKeys<T> = {
-  [K in keyof T]: T[K] extends number | undefined ? K : never;
-}[keyof T];
+  day_hours?: number | null;
+  night_hours?: number | null;
+  weekly_allowance_hours?: number | null;
+  annual_leave_hours?: number | null;
+  holiday_hours?: number | null;
+  labor_day_hours?: number | null;
 
-const SUM_FIELDS: NumberKeys<PayrollData>[] = [
+  day_wage?: number | null;
+  night_wage?: number | null;
+  weekly_allowance_pay?: number | null;
+  annual_leave_pay?: number | null;
+  holiday_pay?: number | null;
+  labor_day_pay?: number | null;
+
+  gross_pay?: number | null;
+
+  insurance_health?: number | null;
+  insurance_care?: number | null;
+  insurance_employment?: number | null;
+  insurance_pension?: number | null;
+
+  total_deduction?: number | null;
+  net_pay?: number | null;
+}
+
+type NumberKeys<T> = Exclude<
+  {
+    [K in keyof T]: NonNullable<T[K]> extends number ? K : never;
+  }[keyof T],
+  undefined
+>;
+
+export const SUM_FIELDS: NumberKeys<PayrollCalculatable>[] = [
   'total_work_days',
   'total_work_hours',
   'avg_daily_hours',
@@ -34,13 +65,18 @@ const SUM_FIELDS: NumberKeys<PayrollData>[] = [
   'net_pay',
 ];
 
-function calculateTotals(data: PayrollData[]): PayrollData {
-  return data.reduce<PayrollData>((acc, cur) => {
-    SUM_FIELDS.forEach((key) => {
-      acc[key] = (acc[key] ?? 0) + (cur[key] ?? 0);
-    });
-    return acc;
-  }, {} as PayrollData);
+export function calculateTotals<T extends PayrollCalculatable>(
+  data: T[],
+): Partial<Record<NumberKeys<PayrollCalculatable>, number>> {
+  return data.reduce(
+    (acc, cur) => {
+      SUM_FIELDS.forEach((key) => {
+        acc[key] = (acc[key] ?? 0) + (cur[key] ?? 0);
+      });
+      return acc;
+    },
+    {} as Partial<Record<NumberKeys<PayrollCalculatable>, number>>,
+  );
 }
 
 export default calculateTotals;

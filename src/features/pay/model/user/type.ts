@@ -1,25 +1,25 @@
 export interface UserPayroll {
-  name: string;
-  birth_date: string;
-  pay_date: string;
+  name: string | null;
+  birth_date: string | null;
+  pay_date: string | null;
 
-  day_wage: number;
-  night_wage: number;
-  weekly_allowance_pay: number;
-  annual_leave_pay: number;
-  holiday_pay: number;
-  extra_pay: number;
+  day_wage: number | null;
+  night_wage: number | null;
+  weekly_allowance_pay: number | null;
+  annual_leave_pay: number | null;
+  holiday_pay: number | null;
+  extra_pay: number | null;
 
-  gross_pay: number;
+  gross_pay: number | null;
 
-  insurance_health: number;
-  insurance_care: number;
-  insurance_employment: number;
-  insurance_pension: number;
+  insurance_health: number | null;
+  insurance_care: number | null;
+  insurance_employment: number | null;
+  insurance_pension: number | null;
 
-  total_deduction: number;
+  total_deduction: number | null;
 
-  net_pay: number;
+  net_pay: number | null;
 }
 
 export interface UserPositionProps {
