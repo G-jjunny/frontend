@@ -11,7 +11,7 @@ export function DetailModal({
       onClick={onClose}
     >
       <div
-        className="bg-white w-[600px] h-[70vh] rounded-lg overflow-hidden flex flex-col"
+        className="bg-white w-[92vw] max-w-[720px] h-[80vh] sm:h-[70vh] rounded-lg overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex-1 overflow-y-auto scrollbar-hide">{children}</div>

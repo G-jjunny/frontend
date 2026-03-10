@@ -26,18 +26,18 @@ export default function ListButton({
     <Link to={to} className="flex items-center cursor-pointer">
       <div
         className={`
-          flex gap-2 text-xs sm:text-10px px-4 py-2 rounded-md
+          flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-md
           ${isActive ? `text-white ${activeColor}` : color}
         `}
       >
-        {Icon && <Icon size={16} className={isActive ? 'text-white' : 'text-gray-600'} />}
-        {label}
+        {Icon && <Icon size={12} className={isActive ? 'text-white' : 'text-gray-600'} />}
+        <span className="hidden sm:inline leading-none">{label}</span>
         {count !== undefined && (
           <span
             className={
               isActive
-                ? 'ml-1 px-1 py-0.5 text-[10px] text-center rounded-full bg-white opacity-60 text-gray-700'
-                : 'ml-1 px-1 py-0.5 text-[10px] text-center rounded-full bg-gray-200 text-gray-700'
+                ? 'ml-1 px-1.5 py-0.5 text-[10px] sm:text-[11px] text-center rounded-full bg-white/70 text-gray-700 leading-none'
+                : 'ml-1 px-1.5 py-0.5 text-[10px] sm:text-[11px] text-center rounded-full bg-gray-200 text-gray-700 leading-none'
             }
           >
             {count}

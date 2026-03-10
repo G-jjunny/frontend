@@ -1,18 +1,39 @@
-import { Badge } from '../../../../features/community/ui/badge';
-import { BoardPage } from '../../../../features/community/ui/main/BoardPage';
-
-import { communityPostList } from '@/features/community/mock/communityMock';
+import { useCommunityPostsQuery } from "@/features/community/api/queries";
+import { Badge } from "@/features/community/ui/badge";
+import { BoardPage } from "@/features/community/ui/main/BoardPage";
+import { useMemo, useState } from "react";
 
 export default function DayoffPage() {
-  const list = communityPostList
-    .filter((post) => post.category === 'DAYOFF')
-    .map((post) => ({
-      id: post.id,
-      title: '휴무 신청',
-      content: `휴무일: ${post.dayoffDate}`,
-      author_name: post.author,
-      created_at: post.createdAt,
-    }));
+  const [page, setPage] = useState(1);
 
-  return <BoardPage list={list} renderBadge={() => <Badge variant="dayoff" label="휴무" />} />;
+  const queryParams = useMemo(
+    () => ({
+      category: '휴무신청',
+      page,
+      page_size: 5,
+    }),
+    [page]
+  );
+
+  const { data, isLoading } = useCommunityPostsQuery(queryParams);
+
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+
+  const dayoffList = data?.items ?? [];
+
+  return (
+    <BoardPage
+      list={dayoffList}
+      renderBadge={() => <Badge variant="dayoff" label="휴무" />}
+      category="휴무신청"
+      pagination={{
+        currentPage: page,
+        totalPages: data?.total_pages ?? 1,
+        onChangePage: setPage,
+      }}
+      title={(post) => `[휴무] ${post.category}`}
+    />
+  );
 }

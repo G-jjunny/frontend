@@ -22,6 +22,7 @@ import type {
 } from './dto';
 
 import { QUERY_KEYS } from '@/shared/api/queryKeys';
+import type { CategoryCountsResponse } from '@/features/community/api/dto';
 
 const SK = QUERY_KEYS.schedule;
 
@@ -80,10 +81,42 @@ export function useDayOffRequestsQuery(status?: string) {
 // 휴무 신청 (크루)
 export function useRequestDayOffMutation() {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (data: DayOffCreateDTO) => requestDayOff(data),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: SK.dayoffsBase() });
+
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: SK.dayoffsBase(),
+      });
+
+      // 휴무신청은 커뮤니티 게시글 목록으로 노출됨
+      await queryClient.invalidateQueries({
+        queryKey: ['communityPosts'],
+      });
+
+      // 상단 탭 뱃지 즉시 갱신 (캐시가 없을 때도 반영)
+      queryClient.setQueryData<CategoryCountsResponse>(
+        ['community', 'category-counts'],
+        (prev) => {
+          const counts = { ...(prev?.counts ?? {}) };
+          counts['휴무신청'] = (counts['휴무신청'] ?? 0) + 1;
+          counts['전체'] = (counts['전체'] ?? 0) + 1;
+          return { counts };
+        },
+        { updatedAt: 0 },
+      );
+
+      await queryClient.invalidateQueries({
+        queryKey: ['community', 'category-counts'],
+        refetchType: 'all',
+      });
+
+      await queryClient.refetchQueries({
+        queryKey: ['community', 'category-counts'],
+        type: 'all',
+      });
+
       toast.success('휴무 신청이 완료되었습니다.');
     },
   });

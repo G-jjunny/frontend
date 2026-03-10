@@ -28,9 +28,13 @@ export function useCreatePostMutation() {
 
   return useMutation({
     mutationFn: (data: CreatePostRequestDTO) => createPost(data),
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['communityPosts'] });
-      void queryClient.invalidateQueries({
+
+    onSuccess: async () => {
+      await queryClient.refetchQueries({
+        queryKey: ['communityPosts'],
+      });
+
+      await queryClient.refetchQueries({
         queryKey: ['community', 'category-counts'],
       });
     },
@@ -39,10 +43,13 @@ export function useCreatePostMutation() {
 
 // LIST
 export const useCommunityPostsQuery = (params: GetCommunityPostsParams) => {
+  const { category, page, page_size } = params;
+
   return useQuery({
-    queryKey: ['communityPosts', params],
-    queryFn: () => getCommunityPosts(params),
-  });
+  queryKey: ['communityPosts', category, page, page_size],
+  queryFn: () => getCommunityPosts(params),
+  refetchOnMount: 'always',
+});
 };
 
 // DETAIL

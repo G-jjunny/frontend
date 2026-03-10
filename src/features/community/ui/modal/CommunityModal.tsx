@@ -57,11 +57,11 @@ export default function CommunityModal({
       onClick={onClose}
     >
       <div
-        className="bg-white w-[500px] rounded-lg overflow-hidden flex flex-col"
+        className="bg-white w-[92vw] max-w-[520px] max-h-[85vh] rounded-lg overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between bg-gradient-to-r from-mega to-mega/90 text-white px-6 py-4">
-          <div className="text-lg font-bold">
+        <div className="flex justify-between bg-gradient-to-r from-mega to-mega/90 text-white px-4 sm:px-6 py-3 sm:py-4">
+          <div className="text-base sm:text-lg font-bold">
             {isCreate
               ? category === '공지'
                 ? '공지사항 작성'
@@ -70,12 +70,12 @@ export default function CommunityModal({
                 ? '공지사항 수정'
                 : '자유게시판 수정'}
           </div>
-          <button onClick={onClose} className="text-2xl text-white/80 hover:text-white">
+          <button onClick={onClose} className="text-xl sm:text-2xl text-white/80 hover:text-white">
             ×
           </button>
         </div>
 
-        <div className="flex flex-col gap-8 p-4">
+        <div className="flex flex-col gap-6 sm:gap-8 p-4 sm:p-5 overflow-y-auto">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-1">
               <Captions size={18} />
@@ -98,23 +98,23 @@ export default function CommunityModal({
               placeholder="내용"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="border border-input px-3 py-2 rounded h-40 resize-none placeholder:text-sm placeholder:text-gray-500"
+              className="border border-input px-3 py-2 rounded h-32 sm:h-40 resize-none placeholder:text-sm placeholder:text-gray-500"
             />
           </div>
 
-          <div className="text-xs border border-gray-300 rounded-lg bg-gray-100 p-4 mb-4">
+          <div className="text-[11px] sm:text-xs border border-gray-300 rounded-lg bg-gray-100 p-3 sm:p-4 mb-2">
             게시글 작성 시 실명이 표시됩니다. 익명기능은 제공하지 않습니다.
           </div>
         </div>
 
-        <div className="flex justify-center gap-2 mb-6">
-          <button onClick={onClose} className="px-4 py-1 border rounded">
+        <div className="flex flex-col sm:flex-row justify-center gap-2 px-4 sm:px-6 pb-5">
+          <button onClick={onClose} className="px-4 py-2 border rounded">
             취소
           </button>
           <button
             onClick={() => void handleSubmit()}
             disabled={isPending}
-            className="px-4 py-1 bg-mega text-white rounded disabled:opacity-50"
+            className="px-4 py-2 bg-mega text-white rounded disabled:opacity-50"
           >
             {isCreate ? '등록' : '수정'}
           </button>
